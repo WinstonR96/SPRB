@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:sap-com:document:sap:soap:functions:mc-style" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:n1="urn:sap-com:document:sap:rfc:functions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+    <sidl:sidl xmlns:sidl="http://www.sap.com/2007/03/sidl" />
+  </wsdl:documentation>
+  <wsp:UsingPolicy wsdl:required="true" />
+  <wsp:Policy wsu:Id="BN__zecollectsap">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedMimeSerialization xmlns:saptrnbnd="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken />
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedXMLTransfer uri="http://xml.sap.com/2006/11/esi/esp/binxml" xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken />
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="BN__zecollectsap_soap12">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedMimeSerialization xmlns:saptrnbnd="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken />
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedXMLTransfer uri="http://xml.sap.com/2006/11/esi/esp/binxml" xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken />
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="IF__ZECOLLECTSAP">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sapsession:Session xmlns:sapsession="http://www.sap.com/webas/630/soap/features/session/">
+          <sapsession:enableSession>false</sapsession:enableSession>
+        </sapsession:Session>
+        <sapcentraladmin:CentralAdministration xmlns:sapcentraladmin="http://www.sap.com/webas/700/soap/features/CentralAdministration/" wsp:Optional="true">
+          <sapcentraladmin:BusinessApplicationID>532335DF40B80AC0E1008000C0A80420</sapcentraladmin:BusinessApplicationID>
+        </sapcentraladmin:CentralAdministration>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ZfiNotifyPaymentD">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ZfiGetCarteraCliente">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ZfiGetServicecodeCliente">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:rfc:functions">
+      <xsd:simpleType name="char10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char20">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char50">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric35">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="35" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="string">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+    </xsd:schema>
+    <xsd:schema xmlns:n0="urn:sap-com:document:sap:rfc:functions" attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style">
+      <xsd:import namespace="urn:sap-com:document:sap:rfc:functions" />
+      <xsd:element name="ZfiGetServicecodeCliente">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Entitycode" type="n0:char10" />
+            <xsd:element name="Reference1" type="n0:char20" />
+            <xsd:element minOccurs="0" name="Reference2" type="n0:char20" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ZfiGetServicecodeClienteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Response" type="n0:string" />
+            <xsd:element name="Retorno" type="n0:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ZfiGetCarteraCliente">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Entitycode" type="n0:char10" />
+            <xsd:element minOccurs="0" name="Password" type="n0:char20" />
+            <xsd:element name="Reference1" type="n0:char20" />
+            <xsd:element minOccurs="0" name="Reference2" type="n0:char20" />
+            <xsd:element name="Servicecode" type="n0:numeric10" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ZfiGetCarteraClienteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Response" type="n0:string" />
+            <xsd:element name="Returncode" type="n0:string" />
+            <xsd:element name="Returndesc" type="n0:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ZfiNotifyPaymentD">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Bankprocessdate" type="n0:char20" />
+            <xsd:element name="Entitycode" type="n0:char10" />
+            <xsd:element name="Finame" type="n0:char50" />
+            <xsd:element name="Paymentchannel" type="n0:char3" />
+            <xsd:element name="Servicecode" type="n0:numeric10" />
+            <xsd:element name="Ticketid" type="n0:numeric35" />
+            <xsd:element name="Transcycle" type="n0:char3" />
+            <xsd:element name="Trazabilitycode" type="n0:numeric35" />
+            <xsd:element name="Xmlreferencearray" type="n0:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ZfiNotifyPaymentDResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Returncode" type="n0:string" />
+            <xsd:element name="Returndesc" type="n0:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ZfiGetServicecodeCliente">
+    <wsdl:part name="parameters" element="tns:ZfiGetServicecodeCliente" />
+  </wsdl:message>
+  <wsdl:message name="ZfiGetServicecodeClienteResponse">
+    <wsdl:part name="parameter" element="tns:ZfiGetServicecodeClienteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ZfiGetCarteraCliente">
+    <wsdl:part name="parameters" element="tns:ZfiGetCarteraCliente" />
+  </wsdl:message>
+  <wsdl:message name="ZfiGetCarteraClienteResponse">
+    <wsdl:part name="parameter" element="tns:ZfiGetCarteraClienteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ZfiNotifyPaymentD">
+    <wsdl:part name="parameters" element="tns:ZfiNotifyPaymentD" />
+  </wsdl:message>
+  <wsdl:message name="ZfiNotifyPaymentDResponse">
+    <wsdl:part name="parameter" element="tns:ZfiNotifyPaymentDResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ZECOLLECTSAP">
+    <wsp:Policy>
+      <wsp:PolicyReference URI="#IF__ZECOLLECTSAP" />
+    </wsp:Policy>
+    <wsdl:operation name="ZfiGetServicecodeCliente">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ZfiGetServicecodeCliente" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ZfiGetServicecodeCliente" />
+      <wsdl:output message="tns:ZfiGetServicecodeClienteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ZfiGetCarteraCliente">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ZfiGetCarteraCliente" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ZfiGetCarteraCliente" />
+      <wsdl:output message="tns:ZfiGetCarteraClienteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ZfiNotifyPaymentD">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ZfiNotifyPaymentD" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ZfiNotifyPaymentD" />
+      <wsdl:output message="tns:ZfiNotifyPaymentDResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="zecollectsap" type="tns:ZECOLLECTSAP">
+    <wsp:Policy>
+      <wsp:PolicyReference URI="#BN__zecollectsap" />
+    </wsp:Policy>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ZfiGetServicecodeCliente">
+      <soap:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZECOLLECTSAP:ZfiGetServicecodeClienteRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZfiGetCarteraCliente">
+      <soap:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZECOLLECTSAP:ZfiGetCarteraClienteRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZfiNotifyPaymentD">
+      <soap:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZECOLLECTSAP:ZfiNotifyPaymentDRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="zecollectsap_soap12" type="tns:ZECOLLECTSAP">
+    <wsp:Policy>
+      <wsp:PolicyReference URI="#BN__zecollectsap_soap12" />
+    </wsp:Policy>
+    <wsoap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ZfiGetServicecodeCliente">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZECOLLECTSAP:ZfiGetServicecodeClienteRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZfiGetCarteraCliente">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZECOLLECTSAP:ZfiGetCarteraClienteRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZfiNotifyPaymentD">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZECOLLECTSAP:ZfiNotifyPaymentDRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="zecollectsap">
+    <wsdl:port name="zecollectsap" binding="tns:zecollectsap">
+      <soap:address location="http://SPRB-SBX.sprb.com:8010/sap/bc/srt/rfc/sap/zecollectsap/400/zecollectsap/zecollectsap" />
+    </wsdl:port>
+    <wsdl:port name="zecollectsap_soap12" binding="tns:zecollectsap_soap12">
+      <wsoap12:address location="http://SPRB-SBX.sprb.com:8010/sap/bc/srt/rfc/sap/zecollectsap/400/zecollectsap/zecollectsap" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

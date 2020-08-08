@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidacionFERedsisOnBase", "ValidacionFERedsisOnBase\ValidacionFERedsisOnBase.csproj", "{2D92C419-BAEF-4A04-842E-D8F99ABCF706}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPRBConsole", "SPRBConsole\SPRBConsole.csproj", "{F00D240E-88BC-4CF6-9BBA-490903335B6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D92C419-BAEF-4A04-842E-D8F99ABCF706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D92C419-BAEF-4A04-842E-D8F99ABCF706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D92C419-BAEF-4A04-842E-D8F99ABCF706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D92C419-BAEF-4A04-842E-D8F99ABCF706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F00D240E-88BC-4CF6-9BBA-490903335B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F00D240E-88BC-4CF6-9BBA-490903335B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F00D240E-88BC-4CF6-9BBA-490903335B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F00D240E-88BC-4CF6-9BBA-490903335B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0B9F844-1E27-422E-988C-DA7C2A160B22}
+	EndGlobalSection
+EndGlobal
