@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using ValidacionFERedsisOnBase.Facturas;
+
 
 namespace SPRBConsole
 {
@@ -14,12 +12,61 @@ namespace SPRBConsole
         {
             Console.WriteLine("Ejecutando");
             string pathXml = "C:\\PG_files\\Factura.xml";
+            string pathHtml = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             var factura = Factura.Create(pathXml, "2020wwe");
-            Console.WriteLine($"Cufe Factura: {factura.CUFE}");
-            Console.WriteLine($"Proveedor Factura: {factura.Proveedor.Nombre}");
+            //Console.WriteLine($"Cufe Factura: {factura.CUFE}");
+            //Console.WriteLine($"Proveedor Factura: {factura.Proveedor.Nombre}");
+            ParsearHtml(pathHtml, factura);
             Console.ReadLine();
         }
 
+        private static void ParsearHtml(string pathHtml, Factura factura)
+        {
+            string html = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
+            if (File.Exists(html))
+            {
+                try
+                {
+                    HtmlAgilityPack.HtmlDocument documentHTML = new HtmlAgilityPack.HtmlDocument();
+                    documentHTML.Load(pathHtml);
+                    Console.WriteLine($"Html: {html}");
+                    documentHTML.GetElementbyId("proveedor").InnerHtml = factura.Proveedor.Nombre;
+                    documentHTML.GetElementbyId("nit").InnerHtml = factura.Proveedor.Nit;
+                    documentHTML.GetElementbyId("direccion").InnerHtml = factura.Proveedor.Direccion;
+                    documentHTML.GetElementbyId("cufe").InnerHtml = factura.CUFE;
+                    //TODO: verificar de donde sale este dato
+                    documentHTML.GetElementbyId("nitpst").InnerHtml = "";
+                    documentHTML.GetElementbyId("nfactura").InnerHtml = factura.NumFactura;
+                    //TODO: verificar de donde sale este dato
+                    documentHTML.GetElementbyId("ordencompra").InnerHtml =  "";
+                    documentHTML.GetElementbyId("fechaemision").InnerHtml =  "";
+                    documentHTML.GetElementbyId("horaemision").InnerHtml =  "";
+                    documentHTML.GetElementbyId("facturasautorizadas").InnerHtml =  "";
+                    documentHTML.GetElementbyId("autorizacionfactura").InnerHtml =  "";
+                    documentHTML.GetElementbyId("periodoautorizacion").InnerHtml =  "";
+                    documentHTML.GetElementbyId("origenfactura").InnerHtml =  "";
+                    documentHTML.GetElementbyId("codigomoneda").InnerHtml =  "";
+                    //TODO: Validar listado de items
+                    documentHTML.GetElementbyId("nitem").InnerHtml =  "";
+                    documentHTML.GetElementbyId("cantidaditem").InnerHtml =  "";
+                    documentHTML.GetElementbyId("descripcionitem").InnerHtml =  "";
+                    documentHTML.GetElementbyId("valorunitarioitem").InnerHtml =  "";
+                    documentHTML.GetElementbyId("valortotalitem").InnerHtml =  "";
+                    documentHTML.GetElementbyId("observaciones").InnerHtml =  factura.Observaciones;
+                    documentHTML.GetElementbyId("basegravable").InnerHtml =  "";
+                    documentHTML.GetElementbyId("preciototal").InnerHtml =  "";
+                    documentHTML.Save(html);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Se produjo un error parseando html: {ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"El archivo {pathHtml} no fue encontrado");
+            }
+        }
 
         public void ConectarSoap()
         {

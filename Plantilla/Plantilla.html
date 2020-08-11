@@ -1,0 +1,498 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 style="font-family: 'Arial';">
+      Factura Electrónica de Proveedor Validación Previa
+    </h1>
+    <table width="100%" style="font-family: 'Arial';">
+      <tbody>
+        <tr>
+          <td width="48%" valign="top">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tbody>
+                <tr>
+                  <td style="border-bottom: solid 1px silver;">
+                    <b
+                      style="
+                        font-size: 11px;
+                        font-weyght: normal;
+                        color: dimgray;
+                        display: inline-block;
+                        line-height: 16px;
+                      "
+                      >NOMBRE:</b
+                    ><br /><span id="proveedor"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table width="100%" cellpadding="2" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td
+                            width="50%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >NIT:</b
+                            ><br /><span id="nit"></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border-bottom: solid 1px silver;">
+                    <b
+                      style="
+                        font-size: 11px;
+                        font-weight: normal;
+                        color: dimgray;
+                        display: inline-block;
+                        line-height: 16px;
+                      "
+                      >DIRECCIÓN:</b
+                    ><br /><span id="direccion"></span><br />
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      border-bottom: solid 1px silver;
+                      background-color: #f8e0f7;
+                    "
+                  >
+                    <b
+                      style="
+                        font-size: 11px;
+                        font-weight: normal;
+                        color: dimgray;
+                        display: inline-block;
+                        line-height: 16px;
+                      "
+                      >CUFE:</b
+                    ><br /><span id="cufe"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" style="border-bottom: solid 1px silver;">
+                    <b
+                      style="
+                        font-size: 11px;
+                        font-weight: normal;
+                        color: dimgray;
+                        display: inline-block;
+                        line-height: 16px;
+                      "
+                      >NIT PST:</b
+                    ><br /><span id="nitpst"></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td width="4" valign="top"></td>
+          <td width="48%" valign="top">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tbody>
+                <tr>
+                  <td>
+                    <table width="100%" cellpadding="2" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td
+                            width="48%"
+                            style="
+                              border-bottom: solid 1px silver;
+                              background-color: #f8e0f7;
+                            "
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >Nº DE FACTURA</b
+                            ><br /><span id="nfactura"></span>
+                          </td>
+                          <td width="4%"></td>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >ORDEN DE COMPRA</b
+                            ><br /><span id="ordencompra"></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table width="100%" cellpadding="2" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >FECHA DE EMISIÓN</b
+                            ><br /><span id="fechaemision"></span>
+                          </td>
+                          <td width="4%"></td>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >HORA DE EMISIÓN</b
+                            ><br /><span id="horaemision"></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table width="100%" cellpadding="2" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >FACTURAS AUTORIZADAS</b
+                            ><br />
+                            <span id="facturasautorizadas"></span>
+                          </td>
+                          <td width="4%"></td>
+                          <td width="48%"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table width="100%" cellpadding="2" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >AUTORIZACIÓN FACTURA</b
+                            ><br /><span id="autorizacionfactura"></span>
+                          </td>
+                          <td width="4%"></td>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >PERIODO DE AUTORIZACIÓN</b
+                            ><br /><span id="periodoautorizacion"></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table width="100%" cellpadding="2" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >ORIGEN DE LA FACTURA</b
+                            ><br /><span id="origenfactura"></span>
+                          </td>
+                          <td width="4%"></td>
+                          <td
+                            width="48%"
+                            style="border-bottom: solid 1px silver;"
+                          >
+                            <b
+                              style="
+                                font-size: 11px;
+                                font-weight: normal;
+                                color: dimgray;
+                                display: inline-block;
+                                line-height: 16px;
+                              "
+                              >CÓDIGO DE LA MONEDA</b
+                            ><br /><span id="codigomoneda"></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <table cellpadding="5" cellspacing="0" style="font-family: 'Arial';">
+      <thead style="border-bottom: solid 1px black;">
+        <tr>
+          <th
+            width="10%"
+            align="center"
+            style="
+              font-size: 11px;
+              line-height: 20px;
+              background: gray;
+              color: white;
+            "
+          >
+            NºITEM
+          </th>
+          <th
+            width="10%"
+            align="center"
+            style="
+              font-size: 11px;
+              line-height: 20px;
+              background: gray;
+              color: white;
+            "
+          >
+            CANTIDAD
+          </th>
+          <th
+            width="70%"
+            align="left"
+            style="
+              font-size: 11px;
+              line-height: 20px;
+              background: gray;
+              color: white;
+            "
+          >
+            DESCRIPCIÓN
+          </th>
+          <th
+            width="20%"
+            align="right"
+            style="
+              font-size: 11px;
+              line-height: 20px;
+              background: gray;
+              color: white;
+            "
+          >
+            VALOR UNITARIO
+          </th>
+          <th
+            width="20%"
+            align="right"
+            style="
+              font-size: 11px;
+              line-height: 20px;
+              background: gray;
+              color: white;
+            "
+          >
+            VALOR TOTAL
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            valign="top"
+            align="center"
+            style="border-bottom: 1px solid silver;"
+          >
+            <span id="nitem"></span>
+          </td>
+          <td
+            valign="top"
+            align="center"
+            style="
+              border-bottom: 1px solid silver;
+              background-color: whitesmoke;
+            "
+          >
+            <span id="cantidaditem"></span>
+          </td>
+          <td valign="top" style="border-bottom: 1px solid silver;">
+            <span id="descripcionitem"></span>
+          </td>
+          <td
+            valign="top"
+            align="right"
+            style="
+              border-bottom: 1px solid silver;
+              background-color: whitesmoke;
+            "
+          >
+            <span id="valorunitarioitem"></span>
+          </td>
+          <td
+            valign="top"
+            align="right"
+            style="
+              border-bottom: 1px solid silver;
+              background-color: gainsboro;
+            "
+          >
+            <strong><span id="valortotalitem"></span></strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <table width="100%" style="font-family: 'Arial';">
+      <tbody>
+        <tr>
+          <td
+            width="70%"
+            valign="top"
+            style="
+              background-color: gainsboro;
+              padding: 10px;
+              border-radius: 5px;
+            "
+          >
+            <strong style="font-size: 12px;">OBSERVACIONES: </strong><br />
+            <p style="font-style: italic; margin: 0px;">
+              <span id="observaciones"></span>
+            </p>
+          </td>
+          <td width="30%" valign="top">
+            <table width="100%" cellpadding="2" cellspacing="0">
+              <tbody>
+                <tr>
+                  <td
+                    style="
+                      font-size: 13px;
+                      font-weight: normal;
+                      color: gray;
+                      line-height: 16px;
+                    "
+                  >
+                    Base Gravable
+                  </td>
+                  <td align="right"><span id="basegravable"></span></td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      font-weight: bold;
+                      color: black;
+                      line-height: 30px;
+                      font-size: 115%;
+                      border-top: solid 1px grey;
+                    "
+                  >
+                    PRECIO TOTAL
+                  </td>
+                  <td
+                    align="right"
+                    style="
+                      line-height: 30px;
+                      font-size: 115%;
+                      border-top: solid 1px grey;
+                      background-color: #f8e0f7;
+                    "
+                  >
+                    <strong><span id="preciototal"></span></strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+    <p></p>
+  </body>
+</html>
