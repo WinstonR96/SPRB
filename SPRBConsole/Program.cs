@@ -12,11 +12,11 @@ namespace SPRBConsole
         {
             Console.WriteLine("Ejecutando");
             string pathXml = "C:\\PG_files\\Factura.xml";
-            string pathHtml = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
+            string html = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             var factura = Factura.Create(pathXml, "2020wwe");
             //Console.WriteLine($"Cufe Factura: {factura.CUFE}");
             //Console.WriteLine($"Proveedor Factura: {factura.Proveedor.Nombre}");
-            ParsearHtml(pathHtml, factura);
+            Factura.ParsearHtml(html, factura);
             Console.ReadLine();
         }
 
