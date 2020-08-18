@@ -14,9 +14,22 @@ namespace SPRBConsole
             string pathXml = "C:\\PG_files\\Factura.xml";
             string html = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             var factura = Factura.Create(pathXml, "2020wwe");
-            //Console.WriteLine($"Cufe Factura: {factura.CUFE}");
-            //Console.WriteLine($"Proveedor Factura: {factura.Proveedor.Nombre}");
+            switch (factura.TipoFactura)
+            {
+                case VersionFactura.V1:
+                    FacturaV1 fv1 = factura as FacturaV1;
+                    Factura.ParsearHtml(html, fv1);
+                    break;
+                case VersionFactura.V2A:
+                    FacturaV2A fv2 = factura as FacturaV2A;
+                    Factura.ParsearHtml(html, fv2);
+                    break;
+                case VersionFactura.NoValida:                    
+                    Factura.ParsearHtml(html, factura);
+                    break;
+            }
             Factura.ParsearHtml(html, factura);
+            Console.WriteLine("Finalizado");
             Console.ReadLine();
         }
 
