@@ -45,7 +45,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             {
                 rejectionMessage = "No se encontró el CUFE";
                 return false;
-            }
+            }            
 
             SetNumeroFactura(xdoc);
             if (NumFactura == string.Empty)
@@ -61,7 +61,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                 return false;
             }
 
-            string nit = string.Empty;
+            string nit;
             if (!ValidateNitRedsis(xdoc, out nit))
             {
                 if (nit == string.Empty)
@@ -148,6 +148,13 @@ namespace ValidacionFERedsisOnBase.Facturas
 
             SetObservaciones(xdoc);
 
+            SetCliente(xdoc);
+            if (Cliente == null)
+            {
+                rejectionMessage = "No se encontró el cliente";
+                return false;
+            }
+
             rejectionMessage = string.Empty;
             return true;
         }
@@ -168,6 +175,53 @@ namespace ValidacionFERedsisOnBase.Facturas
             var cufe = xdoc.Root.Elements().Where(e => e.Name.LocalName == "UUID").SingleOrDefault();
             if (cufe != null)
                 CUFE = cufe.Value;
+        }
+
+        protected virtual void SetCliente(XDocument xdoc)
+        {
+            Cliente = null;
+            var cliente = xdoc.Root.Elements().Where(e => e.Name.LocalName == "AccountingCustomerParty").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Party").SingleOrDefault();
+
+            if (cliente != null)
+            {
+                var nit = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PartyTaxScheme").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "CompanyID").SingleOrDefault();
+
+                if (nit == null || nit.Value == string.Empty) return;
+
+                var nombre = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PartyName").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Name").SingleOrDefault();
+
+                if (nombre == null || nombre.Value == string.Empty) return;
+
+                var ciudad = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Address").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "CityName").SingleOrDefault();
+
+                if (ciudad == null || ciudad.Value == string.Empty) return;
+
+                var dir = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Address").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "AddressLine").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Line").SingleOrDefault();
+
+                if (dir == null || dir.Value == string.Empty) return;
+
+
+                Cliente = new Cliente
+                {
+                    Nit = nit.Value,
+                    Nombre = nombre.Value,
+                    Ciudad = ciudad.Value,
+                    Direccion = dir.Value
+                };
+
+            }
         }
 
         protected virtual void SetNumeroFactura(XDocument xdoc)

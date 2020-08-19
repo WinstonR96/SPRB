@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cliente.cs" />
     <Compile Include="ControlFactura.cs" />
     <Compile Include="DatosCUFE.cs" />
     <Compile Include="Facturas\Contenedor.cs" />

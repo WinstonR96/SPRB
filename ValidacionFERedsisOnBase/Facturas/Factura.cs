@@ -28,6 +28,7 @@ namespace ValidacionFERedsisOnBase.Facturas
         public string NumFactura { get; set; } = string.Empty;
         public Proveedor Proveedor { get; set; } = new Proveedor();
         public string Observaciones { get; set; } = string.Empty;
+        public Cliente Cliente { get; set; } = new Cliente();
 
         public static Factura Create(string xmlFile, string mailMessageID)
         {
@@ -104,6 +105,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                     documentHTML.GetElementbyId("cufe").InnerHtml = factura.CUFE;
                     documentHTML.GetElementbyId("nfactura").InnerHtml = factura.NumFactura;
                     documentHTML.GetElementbyId("observaciones").InnerHtml = factura.Observaciones;
+                    documentHTML.GetElementbyId("nitcliente").InnerHtml = factura.Cliente.Nit;
                     documentHTML.Save(pathHtml);
                 }
                 catch (Exception ex)
@@ -335,7 +337,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             rechazada.NumFactura = NumFactura;
             rechazada.UBLVersion = UBLVersion;
             rechazada.Proveedor = Proveedor;
-
+            rechazada.Cliente = Cliente;
             return rechazada;
         }
     }
