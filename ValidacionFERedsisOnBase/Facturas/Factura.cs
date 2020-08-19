@@ -168,7 +168,10 @@ namespace ValidacionFERedsisOnBase.Facturas
             string ValorTotalItem = "";
             foreach (var item in items)
             {
-                ValorTotalItem += $"{item.LineExtensionAmount}<br>";
+                double cantItem = Convert.ToDouble(item.Cantidad);
+                double valorUnitItem = Convert.ToDouble(item.PriceAmount);
+                string auxTotal = string.Format(new CultureInfo("es-CO"), "{0:c}", cantItem * valorUnitItem);
+                ValorTotalItem += $"{auxTotal}<br>";
             }
             return ValorTotalItem;
         }
