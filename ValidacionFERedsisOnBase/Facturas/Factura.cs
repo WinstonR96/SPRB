@@ -227,7 +227,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             string cantItems = "";
             foreach(var item in items)
             {
-                cantItems += $"{item.Cantidad}<br>";
+                cantItems += $"{item.Cantidad.ToString().Split('.')[0]}<br>";
             }
             return cantItems;
         }
