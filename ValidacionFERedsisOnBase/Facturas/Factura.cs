@@ -133,6 +133,8 @@ namespace ValidacionFERedsisOnBase.Facturas
                     string DescripcionItems = ObtenerDescripcionItems(factura.Items);
                     string ValorUnitarioItem = ObtenerValorUnitarioItem(factura.Items);
                     string ValorTotalItem = ObtenerValorTotalItem(factura.Items);
+                    string BaseGravable = FormatMoneda(factura.BaseGravable);
+                    string TotalFactura = FormatMoneda(factura.TotalFactura);
                     ParsearHtml(pathHtml, factura as Factura, documentHTML);
                     documentHTML.GetElementbyId("nitpst").InnerHtml = factura.PST;
                     documentHTML.GetElementbyId("fechaemision").InnerHtml = factura.FechaEmision;
@@ -147,8 +149,8 @@ namespace ValidacionFERedsisOnBase.Facturas
                     documentHTML.GetElementbyId("descripcionitem").InnerHtml = DescripcionItems;
                     documentHTML.GetElementbyId("valorunitarioitem").InnerHtml = ValorUnitarioItem;
                     documentHTML.GetElementbyId("valortotalitem").InnerHtml = ValorTotalItem;
-                    documentHTML.GetElementbyId("basegravable").InnerHtml = factura.BaseGravable;
-                    documentHTML.GetElementbyId("preciototal").InnerHtml = factura.TotalFactura;
+                    documentHTML.GetElementbyId("basegravable").InnerHtml = BaseGravable;
+                    documentHTML.GetElementbyId("preciototal").InnerHtml = TotalFactura;
                     documentHTML.Save(pathHtml);
                 }
                 catch (Exception ex)
@@ -163,13 +165,21 @@ namespace ValidacionFERedsisOnBase.Facturas
 
         }
 
+        private static string FormatMoneda(string valor)
+        {
+            string value = "";
+            double valorDecimal = Convert.ToDouble(valor, CultureInfo.InvariantCulture);
+            value = string.Format(new CultureInfo("es-CO"), "{0:c}", valorDecimal);
+            return value;
+        }
+
         private static string ObtenerValorTotalItem(List<Item> items)
         {
             string ValorTotalItem = "";
             foreach (var item in items)
             {
-                double cantItem = Convert.ToDouble(item.Cantidad);
-                double valorUnitItem = Convert.ToDouble(item.PriceAmount);
+                double cantItem = Convert.ToDouble(item.Cantidad, CultureInfo.InvariantCulture);
+                double valorUnitItem = Convert.ToDouble(item.PriceAmount, CultureInfo.InvariantCulture);
                 string auxTotal = string.Format(new CultureInfo("es-CO"), "{0:c}", cantItem * valorUnitItem);
                 ValorTotalItem += $"{auxTotal}<br>";
             }
@@ -178,12 +188,13 @@ namespace ValidacionFERedsisOnBase.Facturas
 
         private static string ObtenerValorUnitarioItem(List<Item> items)
         {
+            CultureInfo cultureInfo = new CultureInfo("es-CO");
             string ValorUnitItem = "";
             foreach (var item in items)
             {
-                double convert = Convert.ToDouble(item.PriceAmount);
+                double convert = Convert.ToDouble(item.PriceAmount, CultureInfo.InvariantCulture);
                 //TODO: Dar formato de moneda
-                string aux = string.Format(new CultureInfo("es-CO"),"{0:c}", convert);
+                string aux = string.Format(cultureInfo,"{0:c}", convert);
                 ValorUnitItem += $"{aux}<br>";
             }
             return ValorUnitItem;
