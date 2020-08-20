@@ -10,23 +10,31 @@ namespace ValidacionFERedsisOnBase.Facturas
     {
         protected override bool GetDataFactura(XDocument xdoc, out string rejectionMessage)
         {
-            var invoiceXdocument = GetInvoice(xdoc);
-
-            if (invoiceXdocument == null)
+            try
             {
-                rejectionMessage = "No se encontró el XML correspondiente a la factura electrónica";
-                return false;
-            }
+                var invoiceXdocument = GetInvoice(xdoc);
 
-            string _rejectionMessage = string.Empty;
-            if (!base.GetDataFactura(invoiceXdocument, out _rejectionMessage))
+                if (invoiceXdocument == null)
+                {
+                    rejectionMessage = "No se encontró el XML correspondiente a la factura electrónica";
+                    return false;
+                }
+
+                string _rejectionMessage = string.Empty;
+                if (!base.GetDataFactura(invoiceXdocument, out _rejectionMessage))
+                {
+                    rejectionMessage = _rejectionMessage;
+                    return false;
+                }
+
+                rejectionMessage = "";
+                return true;
+            }
+            catch(Exception ex)
             {
-                rejectionMessage = _rejectionMessage;
-                return false;
+                throw ex;
             }
-
-            rejectionMessage = "";
-            return true;
+            
         }
 
         private XDocument GetInvoice(XDocument xdoc)
@@ -64,5 +72,6 @@ namespace ValidacionFERedsisOnBase.Facturas
             System.IO.File.Delete(tempXmlDataFile);
             return _xdocData;
         }
+
     }
 }

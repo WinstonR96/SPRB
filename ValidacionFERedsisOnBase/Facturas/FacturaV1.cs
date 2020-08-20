@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -33,130 +34,138 @@ namespace ValidacionFERedsisOnBase.Facturas
 
         protected override bool GetDataFactura(XDocument xdoc, out string rejectionMessage)
         {
-            SetUBLVersion(xdoc);
-            if (UBLVersion == string.Empty)
+            try
             {
-                rejectionMessage = "No se enontró la version UBL";
-                return false;
+                SetUBLVersion(xdoc);
+                if (UBLVersion == string.Empty)
+                {
+                    rejectionMessage = "No se enontró la version UBL";
+                    return false;
+                }
+
+                SetCUFE(xdoc);
+                if (CUFE == string.Empty)
+                {
+                    rejectionMessage = "No se encontró el CUFE";
+                    return false;
+                }
+
+                SetNumeroFactura(xdoc);
+                if (NumFactura == string.Empty)
+                {
+                    rejectionMessage = "No se encontró el número de factura";
+                    return false;
+                }
+
+                SetProveedor(xdoc);
+                if (Proveedor == null)
+                {
+                    rejectionMessage = "No se pudo obtener los datos del proveedor";
+                    return false;
+                }
+
+                string nit;
+                if (!ValidateNitRedsis(xdoc, out nit))
+                {
+                    if (nit == string.Empty)
+                        rejectionMessage = "No se pudo validar el nit de redsis en la factura";
+                    else
+                        rejectionMessage = $"El Nit de Redsis '{NIT_REDSIS}' no corresponde al de la factura '{nit}'";
+
+                    return false;
+                }
+
+                SetControlFactura(xdoc);
+                if (ControlFactura == null)
+                {
+                    rejectionMessage = "No se pudo obtener el control de la factura (InvoiceControl)";
+                    return false;
+                }
+
+                SetOrigenFactura(xdoc);
+                if (OrigenFactura == string.Empty)
+                {
+                    rejectionMessage = "No se encontró el origen de la factura";
+                    return false;
+                }
+
+                SetFechaEmision(xdoc);
+                if (FechaEmision == string.Empty)
+                {
+                    rejectionMessage = "No se encontró la Fecha de emisión de la factura";
+                    return false;
+                }
+
+                SetHoraEmision(xdoc);
+                if (HoraEmision == string.Empty)
+                {
+                    rejectionMessage = "No se encontró la hora de emisión de la factura";
+                    return false;
+                }
+
+                SetTipoMoneda(xdoc);
+                if (TipoMoneda == string.Empty)
+                {
+                    rejectionMessage = "No se encontró el tipo de Moneda";
+                    return false;
+                }
+
+                SetPST(xdoc);
+                if (PST == string.Empty)
+                {
+                    rejectionMessage = "No se encontró el PST";
+                    return false;
+                }
+
+                SetTotalFactura(xdoc);
+                if (TotalFactura == string.Empty)
+                {
+                    rejectionMessage = "No se encontró el total de la factura";
+                    return false;
+                }
+
+                SetBaseGravable(xdoc);
+                if (BaseGravable == string.Empty)
+                {
+                    rejectionMessage = "No se encontró la base gravable";
+                    return false;
+                }
+
+                SetTaxesInfo(xdoc);
+                if (TaxesInfo == null)
+                {
+                    rejectionMessage = "Es posible que no se haya encontrado ningún Taxtotal en la factura o que\n" +
+                                        "no se haya podido obtener todas las propiedades para cada uno";
+
+                    return false;
+                }
+
+                SetItems(xdoc);
+                if (Items?.Count == 0)
+                {
+                    rejectionMessage = "Es posible que no se haya encontrado ningún item en la factura o que\n" +
+                                        "no se haya podido obtener todas las propiedades para cada item";
+
+                    return false;
+                }
+
+                SetObservaciones(xdoc);
+
+                SetCliente(xdoc);
+                if (Cliente == null)
+                {
+                    rejectionMessage = "No se encontró el cliente";
+                    return false;
+                }
+
+                rejectionMessage = string.Empty;
+                return true;
             }
-
-            SetCUFE(xdoc);
-            if (CUFE == string.Empty)
+            catch(Exception ex)
             {
-                rejectionMessage = "No se encontró el CUFE";
-                return false;
-            }            
-
-            SetNumeroFactura(xdoc);
-            if (NumFactura == string.Empty)
-            {
-                rejectionMessage = "No se encontró el número de factura";
-                return false;
+                throw ex;
             }
-
-            SetProveedor(xdoc);
-            if (Proveedor == null)
-            {
-                rejectionMessage = "No se pudo obtener los datos del proveedor";
-                return false;
-            }
-
-            string nit;
-            if (!ValidateNitRedsis(xdoc, out nit))
-            {
-                if (nit == string.Empty)
-                    rejectionMessage = "No se pudo validar el nit de redsis en la factura";
-                else
-                    rejectionMessage = $"El Nit de Redsis '{NIT_REDSIS}' no corresponde al de la factura '{nit}'";
-
-                return false;
-            }
-
-            SetControlFactura(xdoc);
-            if (ControlFactura == null)
-            {
-                rejectionMessage = "No se pudo obtener el control de la factura (InvoiceControl)";
-                return false;
-            }
-
-            SetOrigenFactura(xdoc);
-            if (OrigenFactura == string.Empty)
-            {
-                rejectionMessage = "No se encontró el origen de la factura";
-                return false;
-            }
-
-            SetFechaEmision(xdoc);
-            if (FechaEmision == string.Empty)
-            {
-                rejectionMessage = "No se encontró la Fecha de emisión de la factura";
-                return false;
-            }
-
-            SetHoraEmision(xdoc);
-            if (HoraEmision == string.Empty)
-            {
-                rejectionMessage = "No se encontró la hora de emisión de la factura";
-                return false;
-            }
-
-            SetTipoMoneda(xdoc);
-            if (TipoMoneda == string.Empty)
-            {
-                rejectionMessage = "No se encontró el tipo de Moneda";
-                return false;
-            }
-
-            SetPST(xdoc);
-            if (PST == string.Empty)
-            {
-                rejectionMessage = "No se encontró el PST";
-                return false;
-            }
-
-            SetTotalFactura(xdoc);
-            if (TotalFactura == string.Empty)
-            {
-                rejectionMessage = "No se encontró el total de la factura";
-                return false;
-            }
-
-            SetBaseGravable(xdoc);
-            if (BaseGravable == string.Empty)
-            {
-                rejectionMessage = "No se encontró la base gravable";
-                return false;
-            }
-
-            SetTaxesInfo(xdoc);
-            if (TaxesInfo == null)
-            {
-                rejectionMessage = "Es posible que no se haya encontrado ningún Taxtotal en la factura o que\n" +
-                                    "no se haya podido obtener todas las propiedades para cada uno";
-
-                return false;
-            }
-
-            SetItems(xdoc);
-            if (Items?.Count == 0)
-            {
-                rejectionMessage = "Es posible que no se haya encontrado ningún item en la factura o que\n" +
-                                    "no se haya podido obtener todas las propiedades para cada item";
-
-                return false;
-            }
-
-            SetObservaciones(xdoc);
-
-            SetCliente(xdoc);
-            if (Cliente == null)
-            {
-                rejectionMessage = "No se encontró el cliente";
-                return false;
-            }
-
-            rejectionMessage = string.Empty;
-            return true;
+            
         }
 
 
@@ -186,12 +195,12 @@ namespace ValidacionFERedsisOnBase.Facturas
             if (cliente != null)
             {
                 var nit = cliente
-                    .Elements().Where(e => e.Name.LocalName == "PartyTaxScheme").SingleOrDefault()?
-                    .Elements().Where(e => e.Name.LocalName == "CompanyID").SingleOrDefault();
+                    .Elements().Where(e => e.Name.LocalName == "PartyIdentification").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "ID").SingleOrDefault();
 
                 if (nit == null || nit.Value == string.Empty) return;
 
-                var nombre = cliente
+                    var nombre = cliente
                     .Elements().Where(e => e.Name.LocalName == "PartyName").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Name").SingleOrDefault();
 
@@ -628,6 +637,28 @@ namespace ValidacionFERedsisOnBase.Facturas
 
                 Observaciones = todas;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Version de Factura: {TipoFactura}\n" +
+                   $"Mail Message ID: {MailMessageID}\n" +
+                   $"UBL Version : {UBLVersion}\n" +
+                   $"CUFE: {CUFE}\n" +
+                   $"# Factura: {NumFactura}\n" +
+                   $"Observaciones: {Observaciones}\n" +
+                   $"Tipo Moneda: {TipoMoneda}\n" +
+                   $"Origen Factura: {OrigenFactura}\n" +
+                   $"Fecha Emision: {FechaEmision}\n" +
+                   $"Hora Emision: {HoraEmision}\n" +
+                   $"Control Factura: \n{ControlFactura}\n" +
+                   $"Total Factura: {TotalFactura}\n" +
+                   $"Base Gravable: {BaseGravable}\n" +
+                   $"PST: {PST}\n" +
+                   $"Cliente: \n{Cliente}\n" +
+                   $"Proveedor: \n{Proveedor}\n" +
+                   $"Taxes Info: \n{TaxesInfo}\n" +
+                   $"Items: {Items.Count}\n";
         }
     }
 }

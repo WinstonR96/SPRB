@@ -11,12 +11,19 @@ namespace SPRBConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Ejecutando");
-            string pathXml = "C:\\PG_files\\Factura.xml";
+            string pathXml = "C:\\PG_files\\Factura8.xml";
             string plantilla = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             string html = "C:\\Users\\Redsis\\Desktop\\";
             try
             {
                 var factura = Factura.Create(pathXml, "2020wwe");
+                Console.WriteLine(System.Environment.NewLine);
+                Console.WriteLine("------------- Información de Factura ------------");
+                Console.WriteLine(System.Environment.NewLine);
+                Console.WriteLine(factura.ToString());
+                Console.WriteLine(System.Environment.NewLine);
+                Console.WriteLine("-------------------------------------------------");
+                Console.WriteLine(System.Environment.NewLine);
                 switch (factura.TipoFactura)
                 {
                     case VersionFactura.V1:
@@ -30,13 +37,15 @@ namespace SPRBConsole
                     case VersionFactura.NoValida:
                         Factura.ParsearHtml(plantilla, factura, html);
                         break;
+                    default:
+                        FacturaRechazada fr = factura as FacturaRechazada;
+                        throw new Exception($"Factura Rechazada: {factura.Observaciones}");
                 }
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"Ocurrio un error: {ex.Message}");
-            }
-            
+            }            
             //Factura.ParsearHtml(html, factura);
             Console.WriteLine("Finalizado");
             Console.ReadLine();

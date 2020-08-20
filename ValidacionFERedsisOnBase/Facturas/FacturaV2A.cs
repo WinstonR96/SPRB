@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -18,29 +19,37 @@ namespace ValidacionFERedsisOnBase.Facturas
 
         protected override bool GetDataFactura(XDocument xdoc, out string rejectionMessage)
         {
-            string _rejectionMessage = string.Empty;
-            if (!base.GetDataFactura(xdoc, out _rejectionMessage))
+            try
             {
-                rejectionMessage = _rejectionMessage;
-                return false;
+                string _rejectionMessage = string.Empty;
+                if (!base.GetDataFactura(xdoc, out _rejectionMessage))
+                {
+                    rejectionMessage = _rejectionMessage;
+                    return false;
+                }
+
+                SetFechaVencimiento(xdoc);
+                //if (FechaVencimiento == string.Empty)
+                //{
+                //    rejectionMessage = "No se encontró la fecha de vencimiento de la factura";
+                //    return false;
+                //}
+
+                SetNumOrdenCompra(xdoc);
+                //if (NumOrdenCompra == string.Empty)
+                //{
+                //    rejectionMessage = "No se encontró el numero de la orden de compra";
+                //    return false;
+                //}
+
+                rejectionMessage = string.Empty;
+                return true;
             }
-
-            SetFechaVencimiento(xdoc);
-            //if (FechaVencimiento == string.Empty)
-            //{
-            //    rejectionMessage = "No se encontró la fecha de vencimiento de la factura";
-            //    return false;
-            //}
-
-            SetNumOrdenCompra(xdoc);
-            //if (NumOrdenCompra == string.Empty)
-            //{
-            //    rejectionMessage = "No se encontró el numero de la orden de compra";
-            //    return false;
-            //}
-
-            rejectionMessage = string.Empty;
-            return true;
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
         }
 
         protected override bool ValidateNitRedsis(XDocument xdoc, out string nit)
@@ -119,6 +128,53 @@ namespace ValidacionFERedsisOnBase.Facturas
                     Nombre = nombre.Value,
                     Ciudad = ciudad != null ? ciudad.Value : string.Empty,
                     Direccion = _dir
+                };
+
+            }
+        }
+
+        protected override void SetCliente(XDocument xdoc)
+        {
+            Cliente = null;
+            var cliente = xdoc.Root.Elements().Where(e => e.Name.LocalName == "AccountingCustomerParty").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Party").SingleOrDefault();
+
+            if (cliente != null)
+            {
+                var nit = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PartyTaxScheme").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "CompanyID").SingleOrDefault();
+
+                if (nit == null || nit.Value == string.Empty) return;
+
+                var nombre = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PartyName").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Name").SingleOrDefault();
+
+                if (nombre == null || nombre.Value == string.Empty) return;
+
+                var ciudad = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Address").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "CityName").SingleOrDefault();
+
+                if (ciudad == null || ciudad.Value == string.Empty) return;
+
+                var dir = cliente
+                    .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Address").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "AddressLine").SingleOrDefault()?
+                    .Elements().Where(e => e.Name.LocalName == "Line").SingleOrDefault();
+
+                if (dir == null || dir.Value == string.Empty) return;
+
+
+                Cliente = new Cliente
+                {
+                    Nit = nit.Value,
+                    Nombre = nombre.Value,
+                    Ciudad = ciudad.Value,
+                    Direccion = dir.Value
                 };
 
             }
@@ -298,6 +354,30 @@ namespace ValidacionFERedsisOnBase.Facturas
 
             if (orden != null)
                 NumOrdenCompra = orden.Value;
+        }
+
+        public override string ToString()
+        {
+            return $"Version de Factura: {TipoFactura}\n" +
+                   $"Mail Message ID: {MailMessageID}\n" +
+                   $"UBL Version : {UBLVersion}\n" +
+                   $"CUFE: {CUFE}\n" +
+                   $"# Factura: {NumFactura}\n" +
+                   $"Observaciones: {Observaciones}\n" +
+                   $"Fecha vencimiento: {FechaVencimiento}\n" +
+                   $"Nro Orden de compra: {NumOrdenCompra}\n" +
+                   $"Tipo Moneda: {TipoMoneda}\n" +
+                   $"Origen Factura: {OrigenFactura}\n" +
+                   $"Fecha Emision: {FechaEmision}\n" +
+                   $"Hora Emision: {HoraEmision}\n" +
+                   $"Control Factura: \n{ControlFactura}\n" +
+                   $"Total Factura: {TotalFactura}\n" +
+                   $"Base Gravable: {BaseGravable}\n" +
+                   $"PST: {PST}\n" +
+                   $"Cliente: \n{Cliente}\n" +
+                   $"Proveedor: \n{Proveedor}\n" +
+                   $"Taxes Info: \n{TaxesInfo}\n" +
+                   $"Items: {Items.Count}\n";
         }
     }
 }

@@ -12,7 +12,8 @@ namespace ValidacionFERedsisOnBase.Facturas
     {
         V1 = 0,
         V2A = 1,
-        NoValida = 3
+        NoValida = 3,
+        Rechazada = 4
     }
 
     public abstract class Factura
@@ -37,55 +38,53 @@ namespace ValidacionFERedsisOnBase.Facturas
 
             try
             {
-
-                xdoc = XDocument.Load(xmlFile);
-            }
-            catch (Exception e)
-            {
-                Console.Write(e);
-                factura = new FacturaRechazada($"{e.Message}\n{e.ToString()}");
-                factura.MailMessageID = mailMessageID;
-                return factura;
-
-            }
-
-            //string rootName = xdoc.Root.Name.LocalName;
-            string rootNamespaceName = xdoc.Root.Name.NamespaceName;
-
-            switch (rootNamespaceName)
-            {
-                case V1_NAMESPACE:
-                    factura = new FacturaV1();
-                    break;
-                case V2A_NAMESPACE:
-                    factura = new FacturaV2A();
-                    break;
-                case CONTAINER_NAMESPACE:
-                    factura = new Contenedor();
-                    break;
-                default:
-                    //factura = new FacturaRechazada("Namespace de la factura no identificado");
-                    //break;
-                    return null;
-            }
-
-            if (factura.TipoFactura == VersionFactura.V1 || factura.TipoFactura == VersionFactura.V2A)
-            {
-                try
+                if (File.Exists(xmlFile))
                 {
-                    string rejectionMessage = string.Empty;
-                    if (!factura.GetDataFactura(xdoc, out rejectionMessage))
-                        factura = factura.Rechazar(rejectionMessage);
+                    xdoc = XDocument.Load(xmlFile);
+                    //string rootName = xdoc.Root.Name.LocalName;
+                    string rootNamespaceName = xdoc.Root.Name.NamespaceName;
+
+                    switch (rootNamespaceName)
+                    {
+                        case V1_NAMESPACE:
+                            factura = new FacturaV1();
+                            break;
+                        case V2A_NAMESPACE:
+                            factura = new FacturaV2A();
+                            break;
+                        case CONTAINER_NAMESPACE:
+                            factura = new Contenedor();
+                            break;
+                        default:
+                            factura = new FacturaRechazada("Namespace de la factura no identificado");
+                            break;
+                    }
+
+                    if (factura.TipoFactura == VersionFactura.V1 || factura.TipoFactura == VersionFactura.V2A)
+                    {
+                        string rejectionMessage = string.Empty;
+                        if (!factura.GetDataFactura(xdoc, out rejectionMessage))
+                            factura = factura.Rechazar(rejectionMessage);
+                    }
+
+                    factura.MailMessageID = mailMessageID;
+                    return factura;
                 }
-                catch (Exception e)
+                else
                 {
-                    Console.WriteLine(e);
-                    factura = new FacturaRechazada($"{e.Message}\n{e.ToString()}");
+                    throw new Exception($"El archivo: {xmlFile} no existe");
                 }
+                
+            }
+            catch(Exception ex)
+            {
+                //factura = new FacturaRechazada($"{ex.Message}\n{ex.ToString()}");
+                //factura.MailMessageID = mailMessageID;
+                //return factura;
+                throw ex;
             }
 
-            factura.MailMessageID = mailMessageID;
-            return factura;
+            
         }
         /// <summary>
         /// Mapea el objeto factura en una plantilla HTML
@@ -96,39 +95,60 @@ namespace ValidacionFERedsisOnBase.Facturas
         /// <param name="documentHTML"></param>
         public static void ParsearHtml(string plantilla, Factura factura, string html, HtmlAgilityPack.HtmlDocument documentHTML = null)
         {
-            string nameFacturaHtml = factura.NumFactura;
-            string facturaHtml = html + nameFacturaHtml + ".html";
-            if (File.Exists(plantilla))
+            try
             {
-                if (!File.Exists(facturaHtml))
+                if (factura != null)
                 {
-                    File.Copy(plantilla, facturaHtml);
-                }
-                try
-                {
-                    if (documentHTML == null)
+                    string nameFacturaHtml = !string.IsNullOrEmpty(factura.NumFactura) ? factura.NumFactura : "No valido";
+                    string facturaHtml = html + nameFacturaHtml + ".html";
+                    if (File.Exists(plantilla))
                     {
-                        documentHTML = new HtmlAgilityPack.HtmlDocument();
-                        documentHTML.Load(facturaHtml);
+                        if (!File.Exists(facturaHtml))
+                        {
+                            File.Copy(plantilla, facturaHtml);
+                        }
+                        if (documentHTML == null)
+                        {
+                            documentHTML = new HtmlAgilityPack.HtmlDocument();
+                            documentHTML.Load(facturaHtml);
+                        }
+                        
+                        string proveedor = factura.Proveedor != null ? factura.Proveedor.Nombre : "";
+                        string nit = factura.Proveedor != null ? factura.Proveedor.Nit : "";
+                        string direccion = factura.Proveedor != null ? factura.Proveedor.Direccion : "";
+                        string cufe = !string.IsNullOrEmpty(factura.CUFE) ? factura.CUFE : "";
+                        string nfactura = !string.IsNullOrEmpty(factura.NumFactura) ? factura.NumFactura : "";
+                        string observaciones = !string.IsNullOrEmpty(factura.Observaciones) ? factura.Observaciones : "";
+                        string nitcliente = (factura.Cliente == null) ? "" : factura.Cliente.Nit;
+                        documentHTML.GetElementbyId("proveedor").InnerHtml = proveedor;
+                        documentHTML.GetElementbyId("nit").InnerHtml = nit;
+                        documentHTML.GetElementbyId("direccion").InnerHtml = direccion;
+                        documentHTML.GetElementbyId("cufe").InnerHtml = cufe;
+                        documentHTML.GetElementbyId("nfactura").InnerHtml = nfactura;
+                        documentHTML.GetElementbyId("observaciones").InnerHtml = observaciones;
+                        documentHTML.GetElementbyId("nitcliente").InnerHtml = nitcliente;
+                        documentHTML.Save(facturaHtml);
                     }
-                    documentHTML.GetElementbyId("proveedor").InnerHtml = factura.Proveedor.Nombre;
-                    documentHTML.GetElementbyId("nit").InnerHtml = factura.Proveedor.Nit;
-                    documentHTML.GetElementbyId("direccion").InnerHtml = factura.Proveedor.Direccion;
-                    documentHTML.GetElementbyId("cufe").InnerHtml = factura.CUFE;
-                    documentHTML.GetElementbyId("nfactura").InnerHtml = factura.NumFactura;
-                    documentHTML.GetElementbyId("observaciones").InnerHtml = factura.Observaciones;
-                    documentHTML.GetElementbyId("nitcliente").InnerHtml = factura.Cliente.Nit;
-                    documentHTML.Save(facturaHtml);
+                    else
+                    {
+                        throw new Exception($"El archivo {plantilla} no fue encontrado");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new Exception($"Se produjo un error parseando html: {ex.Message}");
+                    throw new Exception("La factura es nula");
                 }
             }
-            else
+            catch (NullReferenceException nre)
             {
-                throw new Exception($"El archivo {plantilla} no fue encontrado");
+                throw nre;
             }
+            catch (Exception ex)
+            {
+                throw ex;
+                //throw new Exception($"Se produjo un error parseando html: {ex.Message}");
+            }
+
         }
 
         /// <summary>
@@ -140,56 +160,67 @@ namespace ValidacionFERedsisOnBase.Facturas
         /// <param name="documentHTML"></param>
         public static void ParsearHtml(string plantilla, FacturaV1 factura, string html, HtmlAgilityPack.HtmlDocument documentHTML = null)
         {
-            string nameFacturaHtml = factura.NumFactura;
-            string facturaHtml = html + nameFacturaHtml + ".html";
-            if (File.Exists(plantilla))
+            try
             {
-                if (!File.Exists(facturaHtml))
+                if (factura != null)
                 {
-                    File.Copy(plantilla, facturaHtml);
-                }
-                try
-                {
-                    if (documentHTML == null)
+                    string nameFacturaHtml = !string.IsNullOrEmpty(factura.NumFactura) ? factura.NumFactura : "No valido";
+                    string facturaHtml = html + nameFacturaHtml + ".html";
+                    if (File.Exists(plantilla))
                     {
-                        documentHTML = new HtmlAgilityPack.HtmlDocument();
-                        documentHTML.Load(facturaHtml);
+                        if (!File.Exists(facturaHtml))
+                        {
+                            File.Copy(plantilla, facturaHtml);
+                        }
+                        if (documentHTML == null)
+                        {
+                            documentHTML = new HtmlAgilityPack.HtmlDocument();
+                            documentHTML.Load(facturaHtml);
+                        }
+                        string NroItem = ObtenerNumeroItem(factura.Items);
+                        string CantidadItems = ObtenerCantidadesItems(factura.Items);
+                        string DescripcionItems = ObtenerDescripcionItems(factura.Items);
+                        string ValorUnitarioItem = ObtenerValorUnitarioItem(factura.Items);
+                        string ValorTotalItem = ObtenerValorTotalItem(factura.Items);
+                        string BaseGravable = FormatMoneda(factura.BaseGravable);
+                        string TotalFactura = FormatMoneda(factura.TotalFactura);
+                        ParsearHtml(facturaHtml, factura as Factura, html, documentHTML);
+                        documentHTML.GetElementbyId("nitpst").InnerHtml = factura.PST;
+                        documentHTML.GetElementbyId("fechaemision").InnerHtml = factura.FechaEmision;
+                        documentHTML.GetElementbyId("horaemision").InnerHtml = factura.HoraEmision;
+                        documentHTML.GetElementbyId("facturasautorizadas").InnerHtml = factura.ControlFactura.FacturasAutorizadas.RangoInicio + " - " + factura.ControlFactura.FacturasAutorizadas.RangoFin;
+                        documentHTML.GetElementbyId("autorizacionfactura").InnerHtml = factura.ControlFactura.Autorizacion;
+                        documentHTML.GetElementbyId("periodoautorizacion").InnerHtml = factura.ControlFactura.PeriodoAutorizacion.FechaInicio + " - " + factura.ControlFactura.PeriodoAutorizacion.FechaFin;
+                        documentHTML.GetElementbyId("origenfactura").InnerHtml = factura.OrigenFactura;
+                        documentHTML.GetElementbyId("codigomoneda").InnerHtml = factura.TipoMoneda;
+                        documentHTML.GetElementbyId("nitem").InnerHtml = NroItem;
+                        documentHTML.GetElementbyId("cantidaditem").InnerHtml = CantidadItems;
+                        documentHTML.GetElementbyId("descripcionitem").InnerHtml = DescripcionItems;
+                        documentHTML.GetElementbyId("valorunitarioitem").InnerHtml = ValorUnitarioItem;
+                        documentHTML.GetElementbyId("valortotalitem").InnerHtml = ValorTotalItem;
+                        documentHTML.GetElementbyId("basegravable").InnerHtml = BaseGravable;
+                        documentHTML.GetElementbyId("preciototal").InnerHtml = TotalFactura;
+                        documentHTML.Save(facturaHtml);
                     }
-                    string NroItem = ObtenerNumeroItem(factura.Items);
-                    string CantidadItems = ObtenerCantidadesItems(factura.Items);
-                    string DescripcionItems = ObtenerDescripcionItems(factura.Items);
-                    string ValorUnitarioItem = ObtenerValorUnitarioItem(factura.Items);
-                    string ValorTotalItem = ObtenerValorTotalItem(factura.Items);
-                    string BaseGravable = FormatMoneda(factura.BaseGravable);
-                    string TotalFactura = FormatMoneda(factura.TotalFactura);
-                    ParsearHtml(facturaHtml, factura as Factura, html, documentHTML);
-                    documentHTML.GetElementbyId("nitpst").InnerHtml = factura.PST;
-                    documentHTML.GetElementbyId("fechaemision").InnerHtml = factura.FechaEmision;
-                    documentHTML.GetElementbyId("horaemision").InnerHtml = factura.HoraEmision;
-                    documentHTML.GetElementbyId("facturasautorizadas").InnerHtml = factura.ControlFactura.FacturasAutorizadas.RangoInicio + " - " + factura.ControlFactura.FacturasAutorizadas.RangoFin;
-                    documentHTML.GetElementbyId("autorizacionfactura").InnerHtml = factura.ControlFactura.Autorizacion;
-                    documentHTML.GetElementbyId("periodoautorizacion").InnerHtml = factura.ControlFactura.PeriodoAutorizacion.FechaInicio + " - " + factura.ControlFactura.PeriodoAutorizacion.FechaFin;
-                    documentHTML.GetElementbyId("origenfactura").InnerHtml = factura.OrigenFactura;
-                    documentHTML.GetElementbyId("codigomoneda").InnerHtml = factura.TipoMoneda;
-                    documentHTML.GetElementbyId("nitem").InnerHtml = NroItem;
-                    documentHTML.GetElementbyId("cantidaditem").InnerHtml = CantidadItems;
-                    documentHTML.GetElementbyId("descripcionitem").InnerHtml = DescripcionItems;
-                    documentHTML.GetElementbyId("valorunitarioitem").InnerHtml = ValorUnitarioItem;
-                    documentHTML.GetElementbyId("valortotalitem").InnerHtml = ValorTotalItem;
-                    documentHTML.GetElementbyId("basegravable").InnerHtml = BaseGravable;
-                    documentHTML.GetElementbyId("preciototal").InnerHtml = TotalFactura;
-                    documentHTML.Save(facturaHtml);
+                    else
+                    {
+                        throw new Exception($"El archivo {plantilla} no fue encontrado");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new Exception($"Se produjo un error parseando html: {ex.Message}");
+                    throw new Exception("La factura es nula");
                 }
             }
-            else
+            catch (NullReferenceException nre)
             {
-                throw new Exception($"El archivo {plantilla} no fue encontrado");
+                throw nre;
             }
-
+            catch (Exception ex)
+            {
+                throw ex;
+                //throw new Exception($"Se produjo un error parseando html: {ex.Message}");
+            }
         }
 
         private static string FormatMoneda(string valor)
@@ -266,34 +297,46 @@ namespace ValidacionFERedsisOnBase.Facturas
         /// <param name="documentHTML"></param>
         public static void ParsearHtml(string plantilla, FacturaV2A factura, string html, HtmlAgilityPack.HtmlDocument documentHTML = null)
         {
-            string nameFacturaHtml = factura.NumFactura;
-            string facturaHtml = html + nameFacturaHtml + ".html";
-            if (File.Exists(plantilla))
+            try
             {
-                if (!File.Exists(facturaHtml)){
-                    File.Copy(plantilla, facturaHtml);
-                }
-                try
+                if (factura != null)
                 {
-                    if (documentHTML == null)
+                    string nameFacturaHtml = !string.IsNullOrEmpty(factura.NumFactura) ? factura.NumFactura : "No valido";
+                    string facturaHtml = html + nameFacturaHtml + ".html";
+                    if (File.Exists(plantilla))
                     {
-                        documentHTML = new HtmlAgilityPack.HtmlDocument();
-                        documentHTML.Load(facturaHtml);
+                        if (!File.Exists(facturaHtml))
+                        {
+                            File.Copy(plantilla, facturaHtml);
+                        }
+                        if (documentHTML == null)
+                        {
+                            documentHTML = new HtmlAgilityPack.HtmlDocument();
+                            documentHTML.Load(facturaHtml);
+                        }
+                        ParsearHtml(facturaHtml, factura as FacturaV1, html, documentHTML);
+                        documentHTML.GetElementbyId("ordencompra").InnerHtml = factura.NumOrdenCompra;
+                        documentHTML.Save(facturaHtml);
                     }
-                    ParsearHtml(facturaHtml, factura as FacturaV1, html, documentHTML);
-                    documentHTML.GetElementbyId("ordencompra").InnerHtml = factura.NumOrdenCompra;
-                    documentHTML.Save(facturaHtml);
+                    else
+                    {
+                        throw new Exception($"El archivo {plantilla} no fue encontrado");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new Exception($"Se produjo un error parseando html: {ex.Message}");
+                    throw new Exception("La factura es nula");
                 }
             }
-            else
+            catch (NullReferenceException nre)
             {
-                throw new Exception($"El archivo {plantilla} no fue encontrado");
+                throw nre;
             }
-
+            catch (Exception ex)
+            {
+                //throw new Exception($"Se produjo un error parseando html: {ex.Message}");
+                throw ex;
+            }
         }
 
         public static VersionFactura GetVersionFactura(string xmlFile)
@@ -376,6 +419,18 @@ namespace ValidacionFERedsisOnBase.Facturas
             rechazada.Proveedor = Proveedor;
             rechazada.Cliente = Cliente;
             return rechazada;
+        }
+
+        public override string ToString()
+        {
+            return $"Version de Factura: {TipoFactura}\n" +
+                   $"Mail Message ID: {MailMessageID}\n" +
+                   $"UBL Version : {UBLVersion}\n" +
+                   $"CUFE: {CUFE}\n" +
+                   $"# Factura: {NumFactura}\n" +
+                   $"Observaciones: {Observaciones}\n" +
+                   $"Cliente: \n{Cliente}\n" +
+                   $"Proveedor: \n{Proveedor}\n";
         }
     }
 }
