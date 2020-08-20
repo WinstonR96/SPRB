@@ -87,17 +87,29 @@ namespace ValidacionFERedsisOnBase.Facturas
             factura.MailMessageID = mailMessageID;
             return factura;
         }
-
-        public static void ParsearHtml(string pathHtml, Factura factura, HtmlAgilityPack.HtmlDocument documentHTML = null)
+        /// <summary>
+        /// Mapea el objeto factura en una plantilla HTML
+        /// </summary>
+        /// <param name="plantilla">Ruta de la plantilla html a ser usada</param>
+        /// <param name="factura">Factura a procesar</param>
+        /// <param name="html">Ruta donde será guardada la factura en html</param>
+        /// <param name="documentHTML"></param>
+        public static void ParsearHtml(string plantilla, Factura factura, string html, HtmlAgilityPack.HtmlDocument documentHTML = null)
         {
-            if (File.Exists(pathHtml))
+            string nameFacturaHtml = factura.NumFactura;
+            string facturaHtml = html + nameFacturaHtml + ".html";
+            if (File.Exists(plantilla))
             {
+                if (!File.Exists(facturaHtml))
+                {
+                    File.Copy(plantilla, facturaHtml);
+                }
                 try
                 {
                     if (documentHTML == null)
                     {
                         documentHTML = new HtmlAgilityPack.HtmlDocument();
-                        documentHTML.Load(pathHtml);
+                        documentHTML.Load(facturaHtml);
                     }
                     documentHTML.GetElementbyId("proveedor").InnerHtml = factura.Proveedor.Nombre;
                     documentHTML.GetElementbyId("nit").InnerHtml = factura.Proveedor.Nit;
@@ -106,7 +118,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                     documentHTML.GetElementbyId("nfactura").InnerHtml = factura.NumFactura;
                     documentHTML.GetElementbyId("observaciones").InnerHtml = factura.Observaciones;
                     documentHTML.GetElementbyId("nitcliente").InnerHtml = factura.Cliente.Nit;
-                    documentHTML.Save(pathHtml);
+                    documentHTML.Save(facturaHtml);
                 }
                 catch (Exception ex)
                 {
@@ -115,20 +127,33 @@ namespace ValidacionFERedsisOnBase.Facturas
             }
             else
             {
-                Console.WriteLine($"El archivo {pathHtml} no fue encontrado");
+                Console.WriteLine($"El archivo {plantilla} no fue encontrado");
             }
         }
 
-        public static void ParsearHtml(string pathHtml, FacturaV1 factura, HtmlAgilityPack.HtmlDocument documentHTML = null)
+        /// <summary>
+        /// Mapea el objeto factura en una plantilla HTML
+        /// </summary>
+        /// <param name="plantilla">Ruta de la plantilla html a ser usada</param>
+        /// <param name="factura">Factura a procesar</param>
+        /// <param name="html">Ruta donde será guardada la factura en html</param>
+        /// <param name="documentHTML"></param>
+        public static void ParsearHtml(string plantilla, FacturaV1 factura, string html, HtmlAgilityPack.HtmlDocument documentHTML = null)
         {
-            if (File.Exists(pathHtml))
+            string nameFacturaHtml = factura.NumFactura;
+            string facturaHtml = html + nameFacturaHtml + ".html";
+            if (File.Exists(plantilla))
             {
+                if (!File.Exists(facturaHtml))
+                {
+                    File.Copy(plantilla, facturaHtml);
+                }
                 try
                 {
                     if (documentHTML == null)
                     {
                         documentHTML = new HtmlAgilityPack.HtmlDocument();
-                        documentHTML.Load(pathHtml);
+                        documentHTML.Load(facturaHtml);
                     }
                     string NroItem = ObtenerNumeroItem(factura.Items);
                     string CantidadItems = ObtenerCantidadesItems(factura.Items);
@@ -137,7 +162,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                     string ValorTotalItem = ObtenerValorTotalItem(factura.Items);
                     string BaseGravable = FormatMoneda(factura.BaseGravable);
                     string TotalFactura = FormatMoneda(factura.TotalFactura);
-                    ParsearHtml(pathHtml, factura as Factura, documentHTML);
+                    ParsearHtml(facturaHtml, factura as Factura, html, documentHTML);
                     documentHTML.GetElementbyId("nitpst").InnerHtml = factura.PST;
                     documentHTML.GetElementbyId("fechaemision").InnerHtml = factura.FechaEmision;
                     documentHTML.GetElementbyId("horaemision").InnerHtml = factura.HoraEmision;
@@ -153,7 +178,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                     documentHTML.GetElementbyId("valortotalitem").InnerHtml = ValorTotalItem;
                     documentHTML.GetElementbyId("basegravable").InnerHtml = BaseGravable;
                     documentHTML.GetElementbyId("preciototal").InnerHtml = TotalFactura;
-                    documentHTML.Save(pathHtml);
+                    documentHTML.Save(facturaHtml);
                 }
                 catch (Exception ex)
                 {
@@ -162,7 +187,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             }
             else
             {
-                Console.WriteLine($"El archivo {pathHtml} no fue encontrado");
+                Console.WriteLine($"El archivo {plantilla} no fue encontrado");
             }
 
         }
@@ -232,20 +257,32 @@ namespace ValidacionFERedsisOnBase.Facturas
             return cantItems;
         }
 
-        public static void ParsearHtml(string pathHtml, FacturaV2A factura, HtmlAgilityPack.HtmlDocument documentHTML = null)
+        /// <summary>
+        /// Mapea el objeto factura en una plantilla HTML
+        /// </summary>
+        /// <param name="plantilla">Ruta de la plantilla html a ser usada</param>
+        /// <param name="factura">Factura a procesar</param>
+        /// <param name="html">Ruta donde será guardada la factura en html</param>
+        /// <param name="documentHTML"></param>
+        public static void ParsearHtml(string plantilla, FacturaV2A factura, string html, HtmlAgilityPack.HtmlDocument documentHTML = null)
         {
-            if (File.Exists(pathHtml))
+            string nameFacturaHtml = factura.NumFactura;
+            string facturaHtml = html + nameFacturaHtml + ".html";
+            if (File.Exists(plantilla))
             {
+                if (!File.Exists(facturaHtml)){
+                    File.Copy(plantilla, facturaHtml);
+                }
                 try
                 {
                     if (documentHTML == null)
                     {
                         documentHTML = new HtmlAgilityPack.HtmlDocument();
-                        documentHTML.Load(pathHtml);
+                        documentHTML.Load(facturaHtml);
                     }
-                    ParsearHtml(pathHtml, factura as FacturaV1, documentHTML);
+                    ParsearHtml(facturaHtml, factura as FacturaV1, html, documentHTML);
                     documentHTML.GetElementbyId("ordencompra").InnerHtml = factura.NumOrdenCompra;
-                    documentHTML.Save(pathHtml);
+                    documentHTML.Save(facturaHtml);
                 }
                 catch (Exception ex)
                 {
@@ -254,7 +291,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             }
             else
             {
-                Console.WriteLine($"El archivo {pathHtml} no fue encontrado");
+                Console.WriteLine($"El archivo {plantilla} no fue encontrado");
             }
 
         }

@@ -12,23 +12,24 @@ namespace SPRBConsole
         {
             Console.WriteLine("Ejecutando");
             string pathXml = "C:\\PG_files\\Factura.xml";
-            string html = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
+            string plantilla = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
+            string html = "C:\\Users\\Redsis\\Desktop\\";
             var factura = Factura.Create(pathXml, "2020wwe");
             switch (factura.TipoFactura)
             {
                 case VersionFactura.V1:
                     FacturaV1 fv1 = factura as FacturaV1;
-                    Factura.ParsearHtml(html, fv1);
+                    Factura.ParsearHtml(plantilla, fv1, html);
                     break;
                 case VersionFactura.V2A:
                     FacturaV2A fv2 = factura as FacturaV2A;
-                    Factura.ParsearHtml(html, fv2);
+                    Factura.ParsearHtml(plantilla, fv2, html);
                     break;
                 case VersionFactura.NoValida:                    
-                    Factura.ParsearHtml(html, factura);
+                    Factura.ParsearHtml(plantilla, factura, html);
                     break;
             }
-            Factura.ParsearHtml(html, factura);
+            //Factura.ParsearHtml(html, factura);
             Console.WriteLine("Finalizado");
             Console.ReadLine();
         }
