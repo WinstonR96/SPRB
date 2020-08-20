@@ -122,12 +122,12 @@ namespace ValidacionFERedsisOnBase.Facturas
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Se produjo un error parseando html: {ex.Message}");
+                    throw new Exception($"Se produjo un error parseando html: {ex.Message}");
                 }
             }
             else
             {
-                Console.WriteLine($"El archivo {plantilla} no fue encontrado");
+                throw new Exception($"El archivo {plantilla} no fue encontrado");
             }
         }
 
@@ -182,12 +182,12 @@ namespace ValidacionFERedsisOnBase.Facturas
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Se produjo un error parseando html: {ex.Message}");
+                    throw new Exception($"Se produjo un error parseando html: {ex.Message}");
                 }
             }
             else
             {
-                Console.WriteLine($"El archivo {plantilla} no fue encontrado");
+                throw new Exception($"El archivo {plantilla} no fue encontrado");
             }
 
         }
@@ -286,12 +286,12 @@ namespace ValidacionFERedsisOnBase.Facturas
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Se produjo un error parseando html: {ex.Message}");
+                    throw new Exception($"Se produjo un error parseando html: {ex.Message}");
                 }
             }
             else
             {
-                Console.WriteLine($"El archivo {plantilla} no fue encontrado");
+                throw new Exception($"El archivo {plantilla} no fue encontrado");
             }
 
         }
