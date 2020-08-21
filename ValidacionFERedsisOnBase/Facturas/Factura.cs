@@ -86,6 +86,50 @@ namespace ValidacionFERedsisOnBase.Facturas
 
             
         }
+
+        public static Factura Create(XDocument xdoc, string mailMessageID)
+        {
+            Factura factura = null;
+            try
+            {
+                //string rootName = xdoc.Root.Name.LocalName;
+                string rootNamespaceName = xdoc.Root.Name.NamespaceName;
+
+                switch (rootNamespaceName)
+                {
+                    case V1_NAMESPACE:
+                        factura = new FacturaV1();
+                        break;
+                    case V2A_NAMESPACE:
+                        factura = new FacturaV2A();
+                        break;
+                    case CONTAINER_NAMESPACE:
+                        factura = new Contenedor();
+                        break;
+                    default:
+                        factura = new FacturaRechazada("Namespace de la factura no identificado");
+                        break;
+                }
+
+                if (factura.TipoFactura == VersionFactura.V1 || factura.TipoFactura == VersionFactura.V2A)
+                {
+                    string rejectionMessage = string.Empty;
+                    if (!factura.GetDataFactura(xdoc, out rejectionMessage))
+                        factura = factura.Rechazar(rejectionMessage);
+                }
+
+                factura.MailMessageID = mailMessageID;
+                return factura;
+            }
+            catch (Exception ex)
+            {
+                //factura = new FacturaRechazada($"{ex.Message}\n{ex.ToString()}");
+                //factura.MailMessageID = mailMessageID;
+                //return factura;
+                throw ex;
+            }
+
+        }
         /// <summary>
         /// Mapea el objeto factura en una plantilla HTML
         /// </summary>

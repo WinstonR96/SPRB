@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.ServiceModel;
+using System.Xml.Linq;
 using ValidacionFERedsisOnBase.Facturas;
 
 
@@ -16,7 +17,9 @@ namespace SPRBConsole
             string html = "C:\\Users\\Redsis\\Desktop\\";
             try
             {
-                var factura = Factura.Create(pathXml, "2020wwe");
+                XDocument xDocument = XDocument.Load(pathXml);                
+                //var factura = Factura.Create(pathXml, "2020wwe");
+                var factura = Factura.Create(xDocument, "2020wwe");
                 Console.WriteLine(System.Environment.NewLine);
                 Console.WriteLine("------------- Información de Factura ------------");
                 Console.WriteLine(System.Environment.NewLine);
