@@ -31,7 +31,7 @@ namespace ValidacionFERedsisOnBase.Facturas
         public string Observaciones { get; set; } = string.Empty;
         public Cliente Cliente { get; set; } = new Cliente();
 
-        public static Factura Create(string xmlFile, string mailMessageID)
+        public static Factura Create(string xmlFile, string mailMessageID, string pathTemp)
         {
             Factura factura = null;
             XDocument xdoc = null;
@@ -63,7 +63,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                     if (factura.TipoFactura == VersionFactura.V1 || factura.TipoFactura == VersionFactura.V2A)
                     {
                         string rejectionMessage = string.Empty;
-                        if (!factura.GetDataFactura(xdoc, out rejectionMessage))
+                        if (!factura.GetDataFactura(xdoc, pathTemp, out rejectionMessage))
                             factura = factura.Rechazar(rejectionMessage);
                     }
 
@@ -87,7 +87,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             
         }
 
-        public static Factura Create(XDocument xdoc, string mailMessageID)
+        public static Factura Create(XDocument xdoc, string mailMessageID, string pathTemp)
         {
             Factura factura = null;
             try
@@ -114,7 +114,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                 if (factura.TipoFactura == VersionFactura.V1 || factura.TipoFactura == VersionFactura.V2A)
                 {
                     string rejectionMessage = string.Empty;
-                    if (!factura.GetDataFactura(xdoc, out rejectionMessage))
+                    if (!factura.GetDataFactura(xdoc, pathTemp, out rejectionMessage))
                         factura = factura.Rechazar(rejectionMessage);
                 }
 
@@ -408,7 +408,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             }
         }
 
-        protected abstract bool GetDataFactura(XDocument xdoc, out string rejectionMessage);
+        protected abstract bool GetDataFactura(XDocument xdoc, string pathTemp, out string rejectionMessage);
 
         public string ToXML()
         {

@@ -8,11 +8,11 @@ namespace ValidacionFERedsisOnBase.Facturas
     [XmlRoot("Factura")]
     public class Contenedor : FacturaV2A
     {
-        protected override bool GetDataFactura(XDocument xdoc, out string rejectionMessage)
+        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, out string rejectionMessage)
         {
             try
             {
-                var invoiceXdocument = GetInvoice(xdoc);
+                var invoiceXdocument = GetInvoice(xdoc, pathTemp);
 
                 if (invoiceXdocument == null)
                 {
@@ -21,7 +21,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                 }
 
                 string _rejectionMessage = string.Empty;
-                if (!base.GetDataFactura(invoiceXdocument, out _rejectionMessage))
+                if (!base.GetDataFactura(invoiceXdocument, pathTemp, out _rejectionMessage))
                 {
                     rejectionMessage = _rejectionMessage;
                     return false;
@@ -37,7 +37,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             
         }
 
-        private XDocument GetInvoice(XDocument xdoc)
+        private XDocument GetInvoice(XDocument xdoc, string path)
         {
             XDocument _xdocData = null;
             var attachment = xdoc.Root.Elements().Where(e => e.Name.LocalName == "Attachment").SingleOrDefault()?
@@ -47,7 +47,8 @@ namespace ValidacionFERedsisOnBase.Facturas
             if (attachment == null) return null;
 
             string attachmentXML = attachment.Value;
-            string tempXmlDataFile = "temp_" + DateTime.Now.Ticks + ".xml";
+            //string tempXmlDataFile = "temp_" + DateTime.Now.Ticks + ".xml";
+            string tempXmlDataFile = path + DateTime.Now.Ticks + ".xml";
 
             using (var sw = new System.IO.StreamWriter(tempXmlDataFile))
                 sw.Write(attachmentXML);

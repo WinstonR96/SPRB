@@ -32,7 +32,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             TipoFactura = VersionFactura.V1;
         }
 
-        protected override bool GetDataFactura(XDocument xdoc, out string rejectionMessage)
+        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, out string rejectionMessage)
         {
             try
             {

@@ -19,7 +19,7 @@ namespace SPRBConsole
             {
                 XDocument xDocument = XDocument.Load(pathXml);                
                 //var factura = Factura.Create(pathXml, "2020wwe");
-                var factura = Factura.Create(xDocument, "2020wwe");
+                var factura = Factura.Create(xDocument, "2020wwe", html);
                 Console.WriteLine(System.Environment.NewLine);
                 Console.WriteLine("------------- Información de Factura ------------");
                 Console.WriteLine(System.Environment.NewLine);

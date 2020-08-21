@@ -17,12 +17,12 @@ namespace ValidacionFERedsisOnBase.Facturas
             TipoFactura = VersionFactura.V2A;
         }
 
-        protected override bool GetDataFactura(XDocument xdoc, out string rejectionMessage)
+        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, out string rejectionMessage)
         {
             try
             {
                 string _rejectionMessage = string.Empty;
-                if (!base.GetDataFactura(xdoc, out _rejectionMessage))
+                if (!base.GetDataFactura(xdoc, pathTemp, out _rejectionMessage))
                 {
                     rejectionMessage = _rejectionMessage;
                     return false;
