@@ -164,6 +164,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                         string nfactura = !string.IsNullOrEmpty(factura.NumFactura) ? factura.NumFactura : "";
                         string observaciones = !string.IsNullOrEmpty(factura.Observaciones) ? factura.Observaciones : "";
                         string nitcliente = (factura.Cliente == null) ? "" : factura.Cliente.Nit;
+                        string nombrecliente = (factura.Cliente == null) ? "" : factura.Cliente.Nombre;
                         documentHTML.GetElementbyId("proveedor").InnerHtml = proveedor;
                         documentHTML.GetElementbyId("nit").InnerHtml = nit;
                         documentHTML.GetElementbyId("direccion").InnerHtml = direccion;
@@ -171,6 +172,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                         documentHTML.GetElementbyId("nfactura").InnerHtml = nfactura;
                         documentHTML.GetElementbyId("observaciones").InnerHtml = observaciones;
                         documentHTML.GetElementbyId("nitcliente").InnerHtml = nitcliente;
+                        documentHTML.GetElementbyId("nombreCliente").InnerHtml = nombrecliente;
                         documentHTML.Save(facturaHtml);
                     }
                     else

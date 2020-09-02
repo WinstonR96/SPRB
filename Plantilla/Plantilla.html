@@ -6,17 +6,24 @@
     <title>Document</title>
   </head>
   <body>
-    <h1 style="font-family: 'Arial';">
-      Factura Electrónica de Proveedor Validación Previa
-    </h1>
-    <table width="100%" style="font-family: 'Arial';">
+    <div style="width: 100%">
+      <div style="width: 60%; float: left">
+        <h1 style="font-family: 'Arial'">
+          Factura Electrónica de Proveedor Validación Previa
+        </h1>
+      </div>
+      <div style="width: 40%; float: left">
+        <h3 id="nombreCliente" style="margin-top: 6%; margin-left: 10%"></h3>
+      </div>
+    </div>
+    <table width="100%" style="font-family: 'Arial'">
       <tbody>
         <tr>
           <td width="48%" valign="top">
             <table width="100%" border="0" cellspacing="0" cellpadding="5">
               <tbody>
                 <tr>
-                  <td style="border-bottom: solid 1px silver;">
+                  <td style="border-bottom: solid 1px silver">
                     <b
                       style="
                         font-size: 11px;
@@ -36,7 +43,7 @@
                         <tr>
                           <td
                             width="50%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -55,7 +62,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td style="border-bottom: solid 1px silver;">
+                  <td style="border-bottom: solid 1px silver">
                     <b
                       style="
                         font-size: 11px;
@@ -88,7 +95,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="50%" style="border-bottom: solid 1px silver;">
+                  <td width="50%" style="border-bottom: solid 1px silver">
                     <b
                       style="
                         font-size: 11px;
@@ -134,7 +141,7 @@
                           <td width="4%"></td>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -159,7 +166,7 @@
                         <tr>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -175,7 +182,7 @@
                           <td width="4%"></td>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -200,7 +207,7 @@
                         <tr>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -217,7 +224,7 @@
                           <td width="4%"></td>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -240,7 +247,7 @@
                         <tr>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -256,7 +263,7 @@
                           <td width="4%"></td>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -281,7 +288,7 @@
                         <tr>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -297,7 +304,7 @@
                           <td width="4%"></td>
                           <td
                             width="48%"
-                            style="border-bottom: solid 1px silver;"
+                            style="border-bottom: solid 1px silver"
                           >
                             <b
                               style="
@@ -331,9 +338,9 @@
     <table
       cellpadding="5"
       cellspacing="0"
-      style="font-family: 'Arial'; border: 1px solid black; width: 100%;"
+      style="font-family: 'Arial'; border: 1px solid black; width: 100%"
     >
-      <thead style="width: 100%; border-bottom: solid 1px black;">
+      <thead style="width: 100%; border-bottom: solid 1px black">
         <tr>
           <th
             width="10%"
@@ -397,13 +404,13 @@
           </th>
         </tr>
       </thead>
-      <tbody style="width: 100%;">
+      <tbody style="width: 100%">
         <tr>
           <td
             width="10%"
             valign="top"
             align="center"
-            style="border-bottom: 1px solid silver;"
+            style="border-bottom: 1px solid silver"
           >
             <span id="nitem"></span>
           </td>
@@ -418,7 +425,7 @@
           >
             <span id="cantidaditem"></span>
           </td>
-          <td width="40%" valign="top" style="border-bottom: 1px solid silver;">
+          <td width="40%" valign="top" style="border-bottom: 1px solid silver">
             <span id="descripcionitem"></span>
           </td>
           <td
@@ -436,10 +443,7 @@
             width="20%"
             valign="top"
             align="right"
-            style="
-              border-bottom: 1px solid silver;
-              background-color: gainsboro;
-            "
+            style="border-bottom: 1px solid silver; background-color: gainsboro"
           >
             <strong><span id="valortotalitem"></span></strong>
           </td>
@@ -453,7 +457,7 @@
         </tr>
       </tbody>
     </table>
-    <table width="100%" style="font-family: 'Arial';">
+    <table width="100%" style="font-family: 'Arial'">
       <tbody>
         <tr>
           <td
@@ -465,8 +469,8 @@
               border-radius: 5px;
             "
           >
-            <strong style="font-size: 12px;">OBSERVACIONES: </strong><br />
-            <p style="font-style: italic; margin: 0px;">
+            <strong style="font-size: 12px">OBSERVACIONES: </strong><br />
+            <p style="font-style: italic; margin: 0px">
               <span id="observaciones"></span>
             </p>
           </td>
