@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -32,7 +33,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             TipoFactura = VersionFactura.V1;
         }
 
-        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, out string rejectionMessage)
+        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage)
         {
             try
             {
@@ -65,15 +66,25 @@ namespace ValidacionFERedsisOnBase.Facturas
                 }
 
                 string nit;
-                if (!ValidateNitRedsis(xdoc, out nit))
+                if(!ValidateNitSPRB(xdoc, nits, out nit))
                 {
                     if (nit == string.Empty)
-                        rejectionMessage = "No se pudo validar el nit de redsis en la factura";
+                        rejectionMessage = "No se pudo validar el nit en la factura";
                     else
-                        rejectionMessage = $"El Nit de Redsis '{NIT_REDSIS}' no corresponde al de la factura '{nit}'";
+                        rejectionMessage = $"Ningun nit no corresponde al de la factura '{nit}'";
 
                     return false;
                 }
+
+                //if (!ValidateNitRedsis(xdoc, out nit))
+                //{
+                //    if (nit == string.Empty)
+                //        rejectionMessage = "No se pudo validar el nit de redsis en la factura";
+                //    else
+                //        rejectionMessage = $"El Nit de Redsis '{NIT_REDSIS}' no corresponde al de la factura '{nit}'";
+
+                //    return false;
+                //}
 
                 SetControlFactura(xdoc);
                 if (ControlFactura == null)
@@ -168,6 +179,35 @@ namespace ValidacionFERedsisOnBase.Facturas
             
         }
 
+        private string QuitarCaracteresNit(string nit)
+        {
+            string patron = @"[^\w]";
+            Regex regex = new Regex(patron);
+            return regex.Replace(nit, "");
+        }
+
+        protected virtual bool ValidateNitSPRB(XDocument xdoc, List<string> nits, out string nit)
+        {
+            var customerNit = xdoc.Root.Elements().Where(e => e.Name.LocalName == "AccountingCustomerParty").SingleOrDefault()?
+                            .Elements().Where(e => e.Name.LocalName == "Party").SingleOrDefault()?
+                            .Elements().Where(e => e.Name.LocalName == "PartyIdentification").SingleOrDefault()?
+                            .Elements().Where(e => e.Name.LocalName == "ID").SingleOrDefault();
+
+            if (customerNit != null && customerNit.Value != string.Empty)
+            {
+                nit = QuitarCaracteresNit(customerNit.Value.Trim());                
+                foreach (var nitSPRB in nits)
+                {
+                    
+                    if (nit == QuitarCaracteresNit(nitSPRB))
+                        return true;
+                }
+            }
+            else
+                nit = string.Empty;
+
+            return false;
+        }
 
         protected virtual void SetUBLVersion(XDocument xdoc)
         {

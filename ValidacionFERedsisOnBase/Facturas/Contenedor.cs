@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -8,7 +9,7 @@ namespace ValidacionFERedsisOnBase.Facturas
     [XmlRoot("Factura")]
     public class Contenedor : FacturaV2A
     {
-        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, out string rejectionMessage)
+        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage)
         {
             try
             {
@@ -21,7 +22,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                 }
 
                 string _rejectionMessage = string.Empty;
-                if (!base.GetDataFactura(invoiceXdocument, pathTemp, out _rejectionMessage))
+                if (!base.GetDataFactura(invoiceXdocument, pathTemp, nits, out _rejectionMessage))
                 {
                     rejectionMessage = _rejectionMessage;
                     return false;

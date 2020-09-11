@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -17,12 +18,12 @@ namespace ValidacionFERedsisOnBase.Facturas
             TipoFactura = VersionFactura.V2A;
         }
 
-        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, out string rejectionMessage)
+        protected override bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage)
         {
             try
             {
                 string _rejectionMessage = string.Empty;
-                if (!base.GetDataFactura(xdoc, pathTemp, out _rejectionMessage))
+                if (!base.GetDataFactura(xdoc, pathTemp, nits, out _rejectionMessage))
                 {
                     rejectionMessage = _rejectionMessage;
                     return false;
@@ -50,6 +51,36 @@ namespace ValidacionFERedsisOnBase.Facturas
                 throw ex;
             }
             
+        }
+
+        private string QuitarCaracteresNit(string nit)
+        {
+            string patron = @"[^\w]";
+            Regex regex = new Regex(patron);
+            return regex.Replace(nit, "");
+        }
+
+        protected override bool ValidateNitSPRB(XDocument xdoc, List<string> nits, out string nit)
+        {
+            var customerNit = xdoc.Root.Elements().Where(e => e.Name.LocalName == "AccountingCustomerParty").SingleOrDefault()?
+                            .Elements().Where(e => e.Name.LocalName == "Party").SingleOrDefault()?
+                            .Elements().Where(e => e.Name.LocalName == "PartyLegalEntity").SingleOrDefault()?
+                            .Elements().Where(e => e.Name.LocalName == "CompanyID").SingleOrDefault();
+
+            if (customerNit != null && customerNit.Value != string.Empty)
+            {
+                nit = QuitarCaracteresNit(customerNit.Value.Trim());
+                foreach (var nitSPRB in nits)
+                {
+
+                    if (nit == QuitarCaracteresNit(nitSPRB))
+                        return true;
+                }
+            }
+            else
+                nit = string.Empty;
+
+            return false;
         }
 
         protected override bool ValidateNitRedsis(XDocument xdoc, out string nit)

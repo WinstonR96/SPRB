@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.Xml.Linq;
@@ -12,14 +13,16 @@ namespace SPRBConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Ejecutando");
-            string pathXml = "C:\\PG_files\\Factura3.xml";
+            string pathXml = "C:\\PG_files\\Factura13.xml";
             string plantilla = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             string html = "C:\\Users\\Redsis\\Desktop\\";
+            List<string> nits = new List<string>();
+            nits.Add("800.186.891");
             try
             {
                 XDocument xDocument = XDocument.Load(pathXml);                
                 //var factura = Factura.Create(pathXml, "2020wwe");
-                var factura = Factura.Create(xDocument, "2020wwe", html);
+                var factura = Factura.Create(xDocument, "2020wwe", html, nits);
                 Console.WriteLine(System.Environment.NewLine);
                 Console.WriteLine("------------- Información de Factura ------------");
                 Console.WriteLine(System.Environment.NewLine);
