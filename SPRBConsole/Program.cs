@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExcelDataReader;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
@@ -13,11 +14,11 @@ namespace SPRBConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Ejecutando");
-            string pathXml = "C:\\PG_files\\Factura13.xml";
+            string pathXml = "C:\\PG_files\\Factura14.xml";
             string plantilla = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             string html = "C:\\Users\\Redsis\\Desktop\\";
-            List<string> nits = new List<string>();
-            nits.Add("800.186.891");
+            string excelPath = "C:\\Users\\Redsis\\Desktop\\Nit.xlsx";
+            List<string> nits = ObtenerNits(excelPath);
             try
             {
                 XDocument xDocument = XDocument.Load(pathXml);                
@@ -75,6 +76,48 @@ namespace SPRBConsole
             var response = ws.ZfiGetCarteraCliente(zfiGetCarteraCliente);
 
             Console.WriteLine($"Probando {response.Returncode}");
+        }
+
+        public static List<string> ObtenerNits(string path)
+        {
+            int row = 0;
+            int col = 0;
+            List<string> nits = new List<string>();
+            try
+            {
+                using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
+                {
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        do
+                        {
+                            int rowCount = 0;
+                            while (reader.Read())
+                            {
+                                if (rowCount >= row)
+                                {
+                                    string cad = reader.GetString(col);
+                                    if (string.IsNullOrEmpty(cad))
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        cad = cad.ToLower();
+                                        nits.Add(cad);
+                                    }
+                                }
+                                rowCount++;
+                            }
+                        } while (reader.NextResult());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return nits;
         }
     }
 }

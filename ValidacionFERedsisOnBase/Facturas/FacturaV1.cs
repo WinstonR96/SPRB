@@ -199,7 +199,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                 foreach (var nitSPRB in nits)
                 {
                     
-                    if (nit == QuitarCaracteresNit(nitSPRB))
+                    if (QuitarCaracteresNit(nitSPRB).Contains(nit))
                         return true;
                 }
             }
