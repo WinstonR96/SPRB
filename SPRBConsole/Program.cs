@@ -15,6 +15,7 @@ namespace SPRBConsole
         {
             Console.WriteLine("Ejecutando");
             string pathXml = "C:\\PG_files\\Factura14.xml";
+            //string pathXml = "C:\\PG_files\\Factura.xml";
             string plantilla = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             string html = "C:\\Users\\Redsis\\Desktop\\";
             string excelPath = "C:\\Users\\Redsis\\Desktop\\Nit.xlsx";
@@ -48,11 +49,17 @@ namespace SPRBConsole
                         FacturaRechazada fr = factura as FacturaRechazada;
                         throw new Exception($"Factura Rechazada: {factura.Observaciones}");
                 }
+
+                //FacturaV2A f2 = factura as FacturaV2A;
+                //Console.WriteLine($"Nro orden: {f2.NumOrdenCompra}");
+                //Console.WriteLine($"Fecha Vencimiento: {f2.FechaVencimiento}");
+                //Console.WriteLine($"Valor total: {f2.TotalFactura}");
+
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"Ocurrio un error: {ex.Message}");
-            }            
+            }       
             //Factura.ParsearHtml(html, factura);
             Console.WriteLine("Finalizado");
             Console.ReadLine();

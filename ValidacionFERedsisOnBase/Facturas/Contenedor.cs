@@ -11,25 +11,27 @@ namespace ValidacionFERedsisOnBase.Facturas
     {
         protected override bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage)
         {
+            rejectionMessage = string.Empty;
+            string SaltoLinea = "<br/>";
+            bool esValida = true;
             try
             {
                 var invoiceXdocument = GetInvoice(xdoc, pathTemp);
 
                 if (invoiceXdocument == null)
                 {
-                    rejectionMessage = "No se encontró el XML correspondiente a la factura electrónica";
-                    return false;
+                    rejectionMessage += "No se encontró el XML correspondiente a la factura electrónica";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 string _rejectionMessage = string.Empty;
                 if (!base.GetDataFactura(invoiceXdocument, pathTemp, nits, out _rejectionMessage))
                 {
                     rejectionMessage = _rejectionMessage;
-                    return false;
-                }
-
-                rejectionMessage = "";
-                return true;
+                    esValida = false;
+                }                
+                return esValida;
             }
             catch(Exception ex)
             {

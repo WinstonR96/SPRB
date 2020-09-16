@@ -29,6 +29,7 @@ namespace ValidacionFERedsisOnBase.Facturas
         public string NumFactura { get; set; } = string.Empty;
         public Proveedor Proveedor { get; set; } = new Proveedor();
         public string Observaciones { get; set; } = string.Empty;
+        public string Notas { get; set; } = string.Empty;
         public Cliente Cliente { get; set; } = new Cliente();
 
         public static Factura Create(string xmlFile, string mailMessageID, string pathTemp, List<string> nits)
@@ -165,12 +166,14 @@ namespace ValidacionFERedsisOnBase.Facturas
                         string observaciones = !string.IsNullOrEmpty(factura.Observaciones) ? factura.Observaciones : "";
                         string nitcliente = (factura.Cliente == null) ? "" : factura.Cliente.Nit;
                         string nombrecliente = (factura.Cliente == null) ? "" : factura.Cliente.Nombre;
+                        string notas = !string.IsNullOrEmpty(factura.Notas) ? factura.Notas : "";
                         documentHTML.GetElementbyId("proveedor").InnerHtml = proveedor;
                         documentHTML.GetElementbyId("nit").InnerHtml = nit;
                         documentHTML.GetElementbyId("direccion").InnerHtml = direccion;
                         documentHTML.GetElementbyId("cufe").InnerHtml = cufe;
                         documentHTML.GetElementbyId("nfactura").InnerHtml = nfactura;
                         documentHTML.GetElementbyId("observaciones").InnerHtml = observaciones;
+                        documentHTML.GetElementbyId("notas").InnerHtml = notas;
                         documentHTML.GetElementbyId("nitcliente").InnerHtml = nitcliente;
                         documentHTML.GetElementbyId("nombreCliente").InnerHtml = nombrecliente;
                         documentHTML.Save(facturaHtml);
@@ -410,6 +413,24 @@ namespace ValidacionFERedsisOnBase.Facturas
             }
         }
 
+        //public FacturaRechazada Rechazar(string rejectionMessage)
+        //{
+        //    FacturaRechazada rechazada = new FacturaRechazada(rejectionMessage)
+        //    {
+        //        MailMessageID = MailMessageID,
+        //        CUFE = CUFE,
+        //        NumFactura = NumFactura,
+        //        UBLVersion = UBLVersion,
+        //        Proveedor = Proveedor,
+        //        Cliente = Cliente,
+        //        Observaciones = Observaciones,
+        //        NumOrdenCompra = N
+        //    };
+        //    return rechazada;
+        //}
+
+        protected abstract FacturaRechazada Rechazar(string rejectionMessage);
+
         protected abstract bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage);
 
         public string ToXML()
@@ -454,19 +475,7 @@ namespace ValidacionFERedsisOnBase.Facturas
             public override Encoding Encoding => Encoding.UTF8;
         }
 
-        public FacturaRechazada Rechazar(string rejectionMessage)
-        {
-            FacturaRechazada rechazada = new FacturaRechazada(rejectionMessage);
-
-            rechazada.MailMessageID = MailMessageID;
-            rechazada.CUFE = CUFE;
-            rechazada.NumFactura = NumFactura;
-            rechazada.UBLVersion = UBLVersion;
-            rechazada.Proveedor = Proveedor;
-            rechazada.Cliente = Cliente;
-            return rechazada;
-        }
-
+        
         public override string ToString()
         {
             return $"Version de Factura: {TipoFactura}\n" +

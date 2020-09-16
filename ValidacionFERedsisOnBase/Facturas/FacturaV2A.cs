@@ -20,37 +20,51 @@ namespace ValidacionFERedsisOnBase.Facturas
 
         protected override bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage)
         {
+            rejectionMessage = string.Empty;
+            string SaltoLinea = "<br/>";
+            bool esValida = true;
             try
             {
                 string _rejectionMessage = string.Empty;
                 if (!base.GetDataFactura(xdoc, pathTemp, nits, out _rejectionMessage))
                 {
                     rejectionMessage = _rejectionMessage;
-                    return false;
+                    esValida = false;
                 }
 
                 SetFechaVencimiento(xdoc);
-                //if (FechaVencimiento == string.Empty)
-                //{
-                //    rejectionMessage = "No se encontró la fecha de vencimiento de la factura";
-                //    return false;
-                //}
+                if (FechaVencimiento == string.Empty)
+                {
+                    rejectionMessage += "No se encontró la fecha de vencimiento de la factura";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
+                }
 
                 SetNumOrdenCompra(xdoc);
-                //if (NumOrdenCompra == string.Empty)
-                //{
-                //    rejectionMessage = "No se encontró el numero de la orden de compra";
-                //    return false;
-                //}
+                if (NumOrdenCompra == string.Empty)
+                {
+                    rejectionMessage += "No se encontró el numero de la orden de compra";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
+                }
 
-                rejectionMessage = string.Empty;
-                return true;
+                //rejectionMessage = string.Empty;
+                return esValida;
             }
             catch(Exception ex)
             {
                 throw ex;
             }
             
+        }
+
+        protected override FacturaRechazada Rechazar(string rejectionMessage)
+        {
+            
+            FacturaRechazada rechazada = base.Rechazar(rejectionMessage);
+            rechazada.FechaVencimiento = FechaVencimiento;
+            rechazada.NumOrdenCompra = NumOrdenCompra;
+            return rechazada;
         }
 
         private string QuitarCaracteresNit(string nit)

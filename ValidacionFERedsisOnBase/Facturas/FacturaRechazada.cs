@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace ValidacionFERedsisOnBase.Facturas
 {
     [XmlRoot("Factura")]
-    public class FacturaRechazada : Factura
+    public class FacturaRechazada : FacturaV2A
     {
         private FacturaRechazada()
         {
@@ -15,13 +15,18 @@ namespace ValidacionFERedsisOnBase.Facturas
 
         public FacturaRechazada(string rejectionMessage) : this()
         {
-            Observaciones = rejectionMessage;
+            //Observaciones = rejectionMessage;
+            Notas = rejectionMessage;
         }
+
+
 
         protected override bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage)
         {
-            rejectionMessage = "No es posible obtener la data de una factura no valida";
+            string SaltoLinea = "<br/>";
+            rejectionMessage = "No es posible obtener la data de una factura no valida"+ SaltoLinea;
             return false;
         }
+        
     }
 }

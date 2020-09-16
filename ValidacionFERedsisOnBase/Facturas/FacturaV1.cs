@@ -35,45 +35,58 @@ namespace ValidacionFERedsisOnBase.Facturas
 
         protected override bool GetDataFactura(XDocument xdoc, string pathTemp, List<string> nits, out string rejectionMessage)
         {
+            rejectionMessage = string.Empty;
+            string SaltoLinea = "<br/>";
+            bool esValida = true;
             try
             {
                 SetUBLVersion(xdoc);
                 if (UBLVersion == string.Empty)
                 {
-                    rejectionMessage = "No se enontró la version UBL";
-                    return false;
+                    rejectionMessage += "No se enontró la version UBL";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetCUFE(xdoc);
                 if (CUFE == string.Empty)
                 {
-                    rejectionMessage = "No se encontró el CUFE";
-                    return false;
+                    rejectionMessage += "No se encontró el CUFE";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetNumeroFactura(xdoc);
                 if (NumFactura == string.Empty)
                 {
-                    rejectionMessage = "No se encontró el número de factura";
-                    return false;
+                    rejectionMessage += "No se encontró el número de factura";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetProveedor(xdoc);
                 if (Proveedor == null)
                 {
-                    rejectionMessage = "No se pudo obtener los datos del proveedor";
-                    return false;
+                    rejectionMessage += "No se pudo obtener los datos del proveedor";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 string nit;
                 if(!ValidateNitSPRB(xdoc, nits, out nit))
                 {
                     if (nit == string.Empty)
-                        rejectionMessage = "No se pudo validar el nit en la factura";
+                    {
+                        rejectionMessage += "No se pudo validar el nit en la factura";
+                        rejectionMessage += SaltoLinea;
+                    }
                     else
-                        rejectionMessage = $"Ningun nit no corresponde al de la factura '{nit}'";
+                    {
+                        rejectionMessage += $"Ningun nit no corresponde al de la factura '{nit}'";
+                        rejectionMessage += SaltoLinea;
+                    }
 
-                    return false;
+                    esValida = false;
                 }
 
                 //if (!ValidateNitRedsis(xdoc, out nit))
@@ -89,75 +102,85 @@ namespace ValidacionFERedsisOnBase.Facturas
                 SetControlFactura(xdoc);
                 if (ControlFactura == null)
                 {
-                    rejectionMessage = "No se pudo obtener el control de la factura (InvoiceControl)";
-                    return false;
+                    rejectionMessage += "No se pudo obtener el control de la factura (InvoiceControl)";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetOrigenFactura(xdoc);
                 if (OrigenFactura == string.Empty)
                 {
-                    rejectionMessage = "No se encontró el origen de la factura";
-                    return false;
+                    rejectionMessage += "No se encontró el origen de la factura";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetFechaEmision(xdoc);
                 if (FechaEmision == string.Empty)
                 {
-                    rejectionMessage = "No se encontró la Fecha de emisión de la factura";
-                    return false;
+                    rejectionMessage += "No se encontró la Fecha de emisión de la factura";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetHoraEmision(xdoc);
                 if (HoraEmision == string.Empty)
                 {
-                    rejectionMessage = "No se encontró la hora de emisión de la factura";
-                    return false;
+                    rejectionMessage += "No se encontró la hora de emisión de la factura";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetTipoMoneda(xdoc);
                 if (TipoMoneda == string.Empty)
                 {
-                    rejectionMessage = "No se encontró el tipo de Moneda";
-                    return false;
+                    rejectionMessage += "No se encontró el tipo de Moneda";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetPST(xdoc);
                 if (PST == string.Empty)
                 {
-                    rejectionMessage = "No se encontró el PST";
-                    return false;
+                    rejectionMessage += "No se encontró el PST";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetTotalFactura(xdoc);
                 if (TotalFactura == string.Empty)
                 {
-                    rejectionMessage = "No se encontró el total de la factura";
-                    return false;
+                    rejectionMessage += "No se encontró el total de la factura";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetBaseGravable(xdoc);
                 if (BaseGravable == string.Empty)
                 {
-                    rejectionMessage = "No se encontró la base gravable";
-                    return false;
+                    rejectionMessage += "No se encontró la base gravable";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
                 SetTaxesInfo(xdoc);
                 if (TaxesInfo == null)
                 {
-                    rejectionMessage = "Es posible que no se haya encontrado ningún Taxtotal en la factura o que\n" +
+                    rejectionMessage += "Es posible que no se haya encontrado ningún Taxtotal en la factura o que\n" +
                                         "no se haya podido obtener todas las propiedades para cada uno";
+                    rejectionMessage += SaltoLinea;
 
-                    return false;
+                    esValida = false;
                 }
 
                 SetItems(xdoc);
                 if (Items?.Count == 0)
                 {
-                    rejectionMessage = "Es posible que no se haya encontrado ningún item en la factura o que\n" +
+                    rejectionMessage += "Es posible que no se haya encontrado ningún item en la factura o que\n" +
                                         "no se haya podido obtener todas las propiedades para cada item";
+                    rejectionMessage += SaltoLinea;
 
-                    return false;
+                    esValida = false;
                 }
 
                 SetObservaciones(xdoc);
@@ -165,18 +188,18 @@ namespace ValidacionFERedsisOnBase.Facturas
                 SetCliente(xdoc);
                 if (Cliente == null)
                 {
-                    rejectionMessage = "No se encontró el cliente";
-                    return false;
+                    rejectionMessage += "No se encontró el cliente";
+                    rejectionMessage += SaltoLinea;
+                    esValida = false;
                 }
 
-                rejectionMessage = string.Empty;
-                return true;
+                //rejectionMessage = string.Empty;
+                return esValida;
             }
             catch(Exception ex)
             {
                 throw ex;
             }
-            
         }
 
         private string QuitarCaracteresNit(string nit)
@@ -699,6 +722,32 @@ namespace ValidacionFERedsisOnBase.Facturas
                    $"Proveedor: \n{Proveedor}\n" +
                    $"Taxes Info: \n{TaxesInfo}\n" +
                    $"Items: {Items.Count}\n";
+        }
+
+        protected override FacturaRechazada Rechazar(string rejectionMessage)
+        {
+            FacturaRechazada rechazada = new FacturaRechazada(rejectionMessage)
+            {
+                TipoFactura = TipoFactura,
+                MailMessageID = MailMessageID,
+                UBLVersion = UBLVersion,
+                CUFE = CUFE,
+                NumFactura = NumFactura,
+                Proveedor = Proveedor,
+                Observaciones = Observaciones,
+                Cliente = Cliente,
+                ControlFactura = ControlFactura,
+                OrigenFactura = OrigenFactura,
+                FechaEmision = FechaEmision,
+                HoraEmision = HoraEmision,
+                TipoMoneda = TipoMoneda,
+                PST = PST,
+                TotalFactura = TotalFactura,
+                BaseGravable = BaseGravable,
+                TaxesInfo = TaxesInfo,
+                Items = Items,
+            };
+            return rechazada;
         }
     }
 }
