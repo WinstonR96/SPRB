@@ -14,7 +14,7 @@ namespace SPRBConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Ejecutando");
-            string pathXml = "C:\\PG_files\\Factura14.xml";
+            string pathXml = "C:\\PG_files\\Factura16.xml";
             //string pathXml = "C:\\PG_files\\Factura.xml";
             string plantilla = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
             string html = "C:\\Users\\Redsis\\Desktop\\";

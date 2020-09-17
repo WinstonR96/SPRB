@@ -64,10 +64,11 @@ namespace ValidacionFERedsisOnBase.Facturas
                     esValida = false;
                 }
 
-                SetProveedor(xdoc);
-                if (Proveedor == null)
+                string errorProveedor = string.Empty;
+                SetProveedor(xdoc, out errorProveedor);
+                if (errorProveedor.Length > 0)
                 {
-                    rejectionMessage += "No se pudo obtener los datos del proveedor";
+                    rejectionMessage += errorProveedor;
                     rejectionMessage += SaltoLinea;
                     esValida = false;
                 }
@@ -185,10 +186,11 @@ namespace ValidacionFERedsisOnBase.Facturas
 
                 SetObservaciones(xdoc);
 
-                SetCliente(xdoc);
-                if (Cliente == null)
+                string errorCliente = string.Empty;
+                SetCliente(xdoc, out errorCliente);
+                if (errorCliente.Length > 0)
                 {
-                    rejectionMessage += "No se encontró el cliente";
+                    rejectionMessage += errorCliente;
                     rejectionMessage += SaltoLinea;
                     esValida = false;
                 }
@@ -249,8 +251,9 @@ namespace ValidacionFERedsisOnBase.Facturas
                 CUFE = cufe.Value;
         }
 
-        protected virtual void SetCliente(XDocument xdoc)
+        protected virtual void SetCliente(XDocument xdoc, out string errorCliente)
         {
+            errorCliente = string.Empty;
             Cliente = null;
             var cliente = xdoc.Root.Elements().Where(e => e.Name.LocalName == "AccountingCustomerParty").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Party").SingleOrDefault();
@@ -261,20 +264,20 @@ namespace ValidacionFERedsisOnBase.Facturas
                     .Elements().Where(e => e.Name.LocalName == "PartyIdentification").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "ID").SingleOrDefault();
 
-                if (nit == null || nit.Value == string.Empty) return;
+                if (nit == null || nit.Value == string.Empty) errorCliente += "No se encontro el nit del cliente";
 
-                    var nombre = cliente
+                var nombre = cliente
                     .Elements().Where(e => e.Name.LocalName == "PartyName").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Name").SingleOrDefault();
 
-                if (nombre == null || nombre.Value == string.Empty) return;
+                if (nombre == null || nombre.Value == string.Empty) errorCliente += "No se encontro el nombre del cliente";
 
                 var ciudad = cliente
                     .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Address").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "CityName").SingleOrDefault();
 
-                if (ciudad == null || ciudad.Value == string.Empty) return;
+                if (ciudad == null || ciudad.Value == string.Empty) errorCliente += "No se encontro la ciudad del cliente";
 
                 var dir = cliente
                     .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
@@ -282,15 +285,15 @@ namespace ValidacionFERedsisOnBase.Facturas
                     .Elements().Where(e => e.Name.LocalName == "AddressLine").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Line").SingleOrDefault();
 
-                if (dir == null || dir.Value == string.Empty) return;
+                if (dir == null || dir.Value == string.Empty) errorCliente += "No se encontro la dirección del cliente";
 
 
                 Cliente = new Cliente
                 {
-                    Nit = nit.Value,
-                    Nombre = nombre.Value,
-                    Ciudad = ciudad.Value,
-                    Direccion = dir.Value
+                    Nit = (nit != null) ? nit.Value : "",
+                    Nombre = (nombre != null) ? nombre.Value : "",
+                    Ciudad = (ciudad != null) ? ciudad.Value : "",
+                    Direccion = (dir != null) ? dir.Value : "",
                 };
 
             }
@@ -304,8 +307,9 @@ namespace ValidacionFERedsisOnBase.Facturas
                 NumFactura = idElem.Value;
         }
 
-        protected virtual void SetProveedor(XDocument xdoc)
+        protected virtual void SetProveedor(XDocument xdoc, out string errorProveedor)
         {
+            errorProveedor = string.Empty;
             Proveedor = null;
             var proveedor = xdoc.Root.Elements().Where(e => e.Name.LocalName == "AccountingSupplierParty").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Party").SingleOrDefault();
@@ -316,20 +320,20 @@ namespace ValidacionFERedsisOnBase.Facturas
                     .Elements().Where(e => e.Name.LocalName == "PartyIdentification").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "ID").SingleOrDefault();
 
-                if (nit == null || nit.Value == string.Empty) return;
+                if (nit == null || nit.Value == string.Empty) errorProveedor += "No se encontro nit del proveedor";
 
                 var nombre = proveedor
                     .Elements().Where(e => e.Name.LocalName == "PartyName").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Name").SingleOrDefault();
 
-                if (nombre == null || nombre.Value == string.Empty) return;
+                if (nombre == null || nombre.Value == string.Empty) errorProveedor += "No se encontro nombre del proveedor";
 
                 var ciudad = proveedor
                     .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Address").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "CityName").SingleOrDefault();
 
-                if (ciudad == null || ciudad.Value == string.Empty) return;
+                if (ciudad == null || ciudad.Value == string.Empty) errorProveedor += "No se encontro ciudad del proveedor";
 
                 var dir = proveedor
                     .Elements().Where(e => e.Name.LocalName == "PhysicalLocation").SingleOrDefault()?
@@ -337,15 +341,15 @@ namespace ValidacionFERedsisOnBase.Facturas
                     .Elements().Where(e => e.Name.LocalName == "AddressLine").SingleOrDefault()?
                     .Elements().Where(e => e.Name.LocalName == "Line").SingleOrDefault();
 
-                if (dir == null || dir.Value == string.Empty) return;
+                if (dir == null || dir.Value == string.Empty) errorProveedor += "No se encontro direccion del proveedor";
 
 
                 Proveedor = new Proveedor
                 {
-                    Nit = nit.Value,
-                    Nombre = nombre.Value,
-                    Ciudad = ciudad.Value,
-                    Direccion = dir.Value
+                    Nit = (nit != null) ? nit.Value : "",
+                    Nombre = (nombre != null) ? nombre.Value : "",
+                    Ciudad = (ciudad != null) ? ciudad.Value : "",
+                    Direccion = (dir != null) ? dir.Value : "",
                 };
 
             }
