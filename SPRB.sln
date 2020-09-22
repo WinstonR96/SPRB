@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidacionFERedsisOnBase", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPRBConsole", "SPRBConsole\SPRBConsole.csproj", "{F00D240E-88BC-4CF6-9BBA-490903335B6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsSoap", "WsSoap\WsSoap.csproj", "{9678C5F6-C2F4-4933-BD40-FE9CCEC4C922}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F00D240E-88BC-4CF6-9BBA-490903335B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F00D240E-88BC-4CF6-9BBA-490903335B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F00D240E-88BC-4CF6-9BBA-490903335B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9678C5F6-C2F4-4933-BD40-FE9CCEC4C922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9678C5F6-C2F4-4933-BD40-FE9CCEC4C922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9678C5F6-C2F4-4933-BD40-FE9CCEC4C922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9678C5F6-C2F4-4933-BD40-FE9CCEC4C922}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
