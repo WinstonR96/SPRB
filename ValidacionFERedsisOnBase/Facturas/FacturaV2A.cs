@@ -400,7 +400,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                 string dia = fv.Substring(8, 2);
                 if (int.Parse(annio) < 1754)
                 {
-                    errorFechaVencimiento = $"el año: {annio} es invalido, se asigno el año: {annioAux} de manera preventiva";
+                    errorFechaVencimiento = $"el año de la fecha de vencimiento: {annio} es invalido, se asigno el año: {annioAux} de manera preventiva";
                     annio = annioAux;
                 }
                 FechaVencimiento = annio+"-"+mes+"-"+dia;

@@ -14,7 +14,7 @@ namespace SPRBConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Ejecutando");
-            string pathXml = "C:\\PG_files\\Factura16.xml";
+            string pathXml = "C:\\PG_files\\Factura17.xml";
             string nit1 = "791481826";
             string nit2 = "8600073229";
             //string pathXml = "C:\\PG_files\\Factura.xml";
