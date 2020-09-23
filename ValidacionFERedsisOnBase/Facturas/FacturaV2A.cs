@@ -32,10 +32,11 @@ namespace ValidacionFERedsisOnBase.Facturas
                     esValida = false;
                 }
 
-                SetFechaVencimiento(xdoc);
-                if (FechaVencimiento == string.Empty)
+                _rejectionMessage = string.Empty;
+                SetFechaVencimiento(xdoc, out _rejectionMessage);
+                if (_rejectionMessage.Length > 0)
                 {
-                    rejectionMessage += "No se encontró la fecha de vencimiento de la factura";
+                    rejectionMessage += _rejectionMessage;
                     rejectionMessage += SaltoLinea;
                     esValida = false;
                 }
@@ -385,12 +386,29 @@ namespace ValidacionFERedsisOnBase.Facturas
             //TaxesTotales = new List<TaxTotal>(_taxesTotales);
         }
 
-        protected virtual void SetFechaVencimiento(XDocument xdoc)
+        protected virtual void SetFechaVencimiento(XDocument xdoc, out string errorFechaVencimiento)
         {
+            errorFechaVencimiento = string.Empty;
             FechaVencimiento = string.Empty;
+            string annioAux = "1920";
             var fecha = xdoc.Root.Elements().Where(e => e.Name.LocalName == "DueDate").SingleOrDefault();
             if (fecha != null)
-                FechaVencimiento = fecha.Value;
+            {
+                string fv = fecha.Value;
+                string annio = fv.Substring(0, 4);
+                string mes = fv.Substring(5, 2);
+                string dia = fv.Substring(8, 2);
+                if (int.Parse(annio) < 1754)
+                {
+                    errorFechaVencimiento = $"el año: {annio} es invalido, se asigno el año: {annioAux} de manera preventiva";
+                    annio = annioAux;
+                }
+                FechaVencimiento = annio+"-"+mes+"-"+dia;
+            }
+            else
+            {
+                errorFechaVencimiento = "No se encontró la fecha de vencimiento de la factura";
+            }
         }
 
         protected virtual void SetNumOrdenCompra(XDocument xdoc)
@@ -411,6 +429,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                    $"CUFE: {CUFE}\n" +
                    $"# Factura: {NumFactura}\n" +
                    $"Observaciones: {Observaciones}\n" +
+                   $"Notas: {Notas}\n" +
                    $"Fecha vencimiento: {FechaVencimiento}\n" +
                    $"Nro Orden de compra: {NumOrdenCompra}\n" +
                    $"Tipo Moneda: {TipoMoneda}\n" +

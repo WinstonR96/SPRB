@@ -484,6 +484,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                    $"CUFE: {CUFE}\n" +
                    $"# Factura: {NumFactura}\n" +
                    $"Observaciones: {Observaciones}\n" +
+                   $"Notas: {Notas}\n" +
                    $"Cliente: \n{Cliente}\n" +
                    $"Proveedor: \n{Proveedor}\n";
         }

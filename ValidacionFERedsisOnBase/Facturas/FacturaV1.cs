@@ -713,6 +713,7 @@ namespace ValidacionFERedsisOnBase.Facturas
                    $"UBL Version : {UBLVersion}\n" +
                    $"CUFE: {CUFE}\n" +
                    $"# Factura: {NumFactura}\n" +
+                   $"Notas: {Notas}\n" +
                    $"Observaciones: {Observaciones}\n" +
                    $"Tipo Moneda: {TipoMoneda}\n" +
                    $"Origen Factura: {OrigenFactura}\n" +
