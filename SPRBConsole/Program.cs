@@ -5,7 +5,7 @@ using System.IO;
 using System.ServiceModel;
 using System.Xml.Linq;
 using ValidacionFERedsisOnBase.Facturas;
-
+using WsSoap;
 
 namespace SPRBConsole
 {
@@ -24,6 +24,8 @@ namespace SPRBConsole
             List<string> nits = ObtenerNits(excelPath);
             try
             {
+                //Obtener correo
+                Console.WriteLine("Nit de prueba {0}",Api.test(nit1));
                 XDocument xDocument = XDocument.Load(pathXml);                
                 //var factura = Factura.Create(pathXml, "2020wwe");
                 var factura = Factura.Create(xDocument, "2020wwe", html, nits);
