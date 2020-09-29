@@ -108,9 +108,9 @@
       <Project>{2d92c419-baef-4a04-842e-d8f99abcf706}</Project>
       <Name>ValidacionFERedsisOnBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WsSoap\WsSoap.csproj">
+    <ProjectReference Include="..\WsSoap\WsSoapSPRB.csproj">
       <Project>{9678c5f6-c2f4-4933-bd40-fe9ccec4c922}</Project>
-      <Name>WsSoap</Name>
+      <Name>WsSoapSPRB</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidacionFERedsisOnBase", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPRBConsole", "SPRBConsole\SPRBConsole.csproj", "{F00D240E-88BC-4CF6-9BBA-490903335B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsSoap", "WsSoap\WsSoap.csproj", "{9678C5F6-C2F4-4933-BD40-FE9CCEC4C922}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsSoapSPRB", "WsSoap\WsSoapSPRB.csproj", "{9678C5F6-C2F4-4933-BD40-FE9CCEC4C922}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
