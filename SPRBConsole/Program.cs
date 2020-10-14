@@ -26,7 +26,8 @@ namespace SPRBConsole
             {
                 //Obtener correo
                 Console.WriteLine("Nit de prueba {0}",Api.test(nit1));
-                XDocument xDocument = XDocument.Load(pathXml);                
+                Console.WriteLine("Nit de prueba {0}",Api.test(nit2));
+                XDocument xDocument = XDocument.Load(pathXml);
                 //var factura = Factura.Create(pathXml, "2020wwe");
                 var factura = Factura.Create(xDocument, "2020wwe", html, nits);
                 Console.WriteLine(System.Environment.NewLine);
@@ -54,10 +55,10 @@ namespace SPRBConsole
                         throw new Exception($"Factura Rechazada: {factura.Observaciones}");
                 }
 
-                //FacturaV2A f2 = factura as FacturaV2A;
-                //Console.WriteLine($"Nro orden: {f2.NumOrdenCompra}");
-                //Console.WriteLine($"Fecha Vencimiento: {f2.FechaVencimiento}");
-                //Console.WriteLine($"Valor total: {f2.TotalFactura}");
+                FacturaV2A f2 = factura as FacturaV2A;
+                Console.WriteLine($"Nro orden: {f2.NumOrdenCompra}");
+                Console.WriteLine($"Fecha Vencimiento: {f2.FechaVencimiento}");
+                Console.WriteLine($"Valor total: {f2.TotalFactura}");
 
             }
             catch(Exception ex)
