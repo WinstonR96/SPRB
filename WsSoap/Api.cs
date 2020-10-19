@@ -2,7 +2,7 @@
 {
     public static class Api
     {
-        public static string test(string nit)
+        public static string ObtenerEmail(string nit)
         {
             string email = "";
             SPRBWs.ZWS_ONBASE zWS_ONBASE = new SPRBWs.ZWS_ONBASE();

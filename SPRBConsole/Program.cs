@@ -25,8 +25,8 @@ namespace SPRBConsole
             try
             {
                 //Obtener correo
-                Console.WriteLine("Nit de prueba {0}",Api.test(nit1));
-                Console.WriteLine("Nit de prueba {0}",Api.test(nit2));
+                Console.WriteLine("Nit de prueba {0}",Api.ObtenerEmail(nit1));
+                Console.WriteLine("Nit de prueba {0}",Api.ObtenerEmail(nit2));
                 XDocument xDocument = XDocument.Load(pathXml);
                 //var factura = Factura.Create(pathXml, "2020wwe");
                 var factura = Factura.Create(xDocument, "2020wwe", html, nits);
