@@ -14,56 +14,56 @@ namespace SPRBConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Ejecutando");
-            string pathXml = "C:\\PG_files\\Factura17.xml";
+            string pathXml = "C:\\PG_files\\Factura6.xml";
             string nit1 = "791481826";
             string nit2 = "8600073229";
-            string plantilla = "C:\\Users\\Redsis\\Desktop\\Plantilla.html";
-            string html = "C:\\Users\\Redsis\\Desktop\\";
-            string excelPath = "C:\\Users\\Redsis\\Desktop\\Nit.xlsx";
+            string plantilla = "C:\\Users\\wrodriguez\\Desktop\\Plantilla.html";
+            string html = "C:\\Users\\wrodriguez\\Desktop\\";
+            string excelPath = "C:\\Users\\wrodriguez\\Desktop\\Nit.xlsx";
             string csvPath = @"C:\Users\wrodriguez\Documents\archivo.csv";
             try
             {
-                //List<string> nits = ObtenerNits(excelPath);
+                List<string> nits = ObtenerNits(excelPath);
                 //var facturas = procesarCsv(csvPath);
-                //foreach(var factura in facturas)
+                //foreach (var factura in facturas)
                 //{
                 //    Console.WriteLine($"{factura.Id_Empresa} - {factura.Nro_Factura} - {factura.Nro_Egreso} - {factura.Estado}");
                 //}
                 ////Obtener correo
                 //Console.WriteLine("Nit de prueba {0}",Api.ObtenerEmail(nit1));
                 //Console.WriteLine("Nit de prueba {0}",Api.ObtenerEmail(nit2));
-                //XDocument xDocument = XDocument.Load(pathXml);
-                ////var factura = Factura.Create(pathXml, "2020wwe");
-                //var factura = Factura.Create(xDocument, "2020wwe", html, nits);
-                //Console.WriteLine(System.Environment.NewLine);
-                //Console.WriteLine("------------- Información de Factura ------------");
-                //Console.WriteLine(System.Environment.NewLine);
-                //Console.WriteLine(factura.ToString());
-                //Console.WriteLine(System.Environment.NewLine);
-                //Console.WriteLine("-------------------------------------------------");
-                //Console.WriteLine(System.Environment.NewLine);
-                //switch (factura.TipoFactura)
-                //{
-                //    case VersionFactura.V1:
-                //        FacturaV1 fv1 = factura as FacturaV1;
-                //        Factura.ParsearHtml(plantilla, fv1, html);
-                //        break;
-                //    case VersionFactura.V2A:
-                //        FacturaV2A fv2 = factura as FacturaV2A;
-                //        Factura.ParsearHtml(plantilla, fv2, html);
-                //        break;
-                //    case VersionFactura.NoValida:
-                //        Factura.ParsearHtml(plantilla, factura, html);
-                //        break;
-                //    default:
-                //        FacturaRechazada fr = factura as FacturaRechazada;
-                //        throw new Exception($"Factura Rechazada: {factura.Observaciones}");
-                //}
+                XDocument xDocument = XDocument.Load(pathXml);
+                //var factura = Factura.Create(pathXml, "2020wwe");
+                var factura = Factura.Create(xDocument, "2020wwe", html, nits);
+                Console.WriteLine(System.Environment.NewLine);
+                Console.WriteLine("------------- Información de Factura ------------");
+                Console.WriteLine(System.Environment.NewLine);
+                Console.WriteLine(factura.ToString());
+                Console.WriteLine(System.Environment.NewLine);
+                Console.WriteLine("-------------------------------------------------");
+                Console.WriteLine(System.Environment.NewLine);
+                switch (factura.TipoFactura)
+                {
+                    case VersionFactura.V1:
+                        FacturaV1 fv1 = factura as FacturaV1;
+                        Factura.ParsearHtml(plantilla, fv1, html);
+                        break;
+                    case VersionFactura.V2A:
+                        FacturaV2A fv2 = factura as FacturaV2A;
+                        Factura.ParsearHtml(plantilla, fv2, html);
+                        break;
+                    case VersionFactura.NoValida:
+                        Factura.ParsearHtml(plantilla, factura, html);
+                        break;
+                    default:
+                        FacturaRechazada fr = factura as FacturaRechazada;
+                        throw new Exception($"Factura Rechazada: {factura.Observaciones}");
+                }
 
-                //FacturaV2A f2 = factura as FacturaV2A;
-                //Console.WriteLine($"Nro orden: {f2.NumOrdenCompra}");
-                //Console.WriteLine($"Fecha Vencimiento: {f2.FechaVencimiento}");
-                //Console.WriteLine($"Valor total: {f2.TotalFactura}");
+                FacturaV2A f2 = factura as FacturaV2A;
+                Console.WriteLine($"Nro orden: {f2.NumOrdenCompra}");
+                Console.WriteLine($"Fecha Vencimiento: {f2.FechaVencimiento}");
+                Console.WriteLine($"Valor total: {f2.TotalFactura}");
 
             }
             catch(Exception ex)
@@ -137,57 +137,57 @@ namespace SPRBConsole
             return nits;
         }
 
-        public class Factura
-        {
-            public string Id_Empresa { get; set; }
-            public string Nro_Factura { get; set; }
-            public string Nro_Egreso { get; set; }
-            public string Estado { get; set; }
-        }
+    //    public class Factura
+    //    {
+    //        public string Id_Empresa { get; set; }
+    //        public string Nro_Factura { get; set; }
+    //        public string Nro_Egreso { get; set; }
+    //        public string Estado { get; set; }
+    //    }
 
-        public static List<Factura> procesarCsv(string path)
-        {
-            int row = 0;
-            int col = 0;
-            List<Factura> facturas = new List<Factura>();
-            try
-            {
-                using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
-                {
-                    using (var reader = ExcelReaderFactory.CreateCsvReader(stream))
-                    {
-                        do
-                        {
-                            int rowCount = 0;
-                            while (reader.Read())
-                            {
-                                if (rowCount >= row)
-                                {
-                                    string id_empresa = reader.GetString(col);
-                                    string nro_factura = reader.GetString(col+1);
-                                    string nro_egreso = reader.GetString(col+2);
-                                    string estado = reader.GetString(col+3);
-                                    facturas.Add(new Factura()
-                                    {
-                                        Id_Empresa = id_empresa,
-                                        Nro_Factura = nro_factura,
-                                        Nro_Egreso = nro_egreso,
-                                        Estado = estado,
-                                    });
+    //    public static List<Factura> procesarCsv(string path)
+    //    {
+    //        int row = 0;
+    //        int col = 0;
+    //        List<Factura> facturas = new List<Factura>();
+    //        try
+    //        {
+    //            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
+    //            {
+    //                using (var reader = ExcelReaderFactory.CreateCsvReader(stream))
+    //                {
+    //                    do
+    //                    {
+    //                        int rowCount = 0;
+    //                        while (reader.Read())
+    //                        {
+    //                            if (rowCount >= row)
+    //                            {
+    //                                string id_empresa = reader.GetString(col);
+    //                                string nro_factura = reader.GetString(col+1);
+    //                                string nro_egreso = reader.GetString(col+2);
+    //                                string estado = reader.GetString(col+3);
+    //                                facturas.Add(new Factura()
+    //                                {
+    //                                    Id_Empresa = id_empresa,
+    //                                    Nro_Factura = nro_factura,
+    //                                    Nro_Egreso = nro_egreso,
+    //                                    Estado = estado,
+    //                                });
                                     
-                                }
-                                rowCount++;
-                            }
-                        } while (reader.NextResult());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return facturas;
-        }
+    //                            }
+    //                            rowCount++;
+    //                        }
+    //                    } while (reader.NextResult());
+    //                }
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            throw ex;
+    //        }
+    //        return facturas;
+    //    }
     }
     
 }
