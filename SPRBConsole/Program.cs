@@ -7,7 +7,6 @@ using System.ServiceModel;
 using System.Xml.Linq;
 using ValidacionFERedsisOnBase.Facturas;
 using WsSoap;
-using System.Reflection;
 using System.Linq;
 
 namespace SPRBConsole
@@ -31,7 +30,7 @@ namespace SPRBConsole
                 foreach (var factura in facturas)
                 {
                     factura.Resultado = "No encontrada";
-                    Console.WriteLine($"{factura.Id_Empresa} - {factura.Nro_Factura} - {factura.Nit} - {factura.Nro_Egreso} - {factura.Estado} - {factura.Resultado}");
+                    //Console.WriteLine($"{factura.Id_Empresa} - {factura.Nro_Factura} - {factura.Nit} - {factura.Nro_Egreso} - {factura.Estado} - {factura.Resultado}");
                 }
                 Console.WriteLine(actualizarCsv(csvPath,facturas));
                 ////Obtener correo
@@ -207,19 +206,13 @@ namespace SPRBConsole
             if (facturas == null || facturas.Count == 0) return false;
             try
             {
-                Type t = facturas[0].GetType();
                 string newLine = Environment.NewLine;
                 using (var sw = new StreamWriter(path))
                 {
-                    object o = Activator.CreateInstance(t);
-                    PropertyInfo[] props = o.GetType().GetProperties();
                     foreach (Factura item in facturas)
                     {
-                        var row = string.Join(";", props.Select(d => item.GetType()
-                                                                        .GetProperty(d.Name)
-                                                                        .GetValue(item, null)
-                                                                        .ToString())
-                                                                .ToArray());
+                        string[] aux = new string[] { item.Id_Empresa, item.Nro_Factura, item.Nit, item.Nro_Egreso, item.Estado, item.Nomb_Propuesta, item.Resultado };
+                        var row = string.Join(";", aux.ToArray());
                         sw.Write(row + newLine);
                     }
                     return true;
